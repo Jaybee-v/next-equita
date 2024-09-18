@@ -8,14 +8,15 @@ export default function AuthButton() {
 
   return session?.data?.user ? (
     <Button
+      variant="destructive"
       onClick={async () => {
         await signOut();
         await signIn();
       }}
     >
-      {session.data?.user?.name} : Sign Out
+      {session.data?.user?.name} : Déconnexion
     </Button>
   ) : (
-    <Button onClick={async () => await signIn()}>Sign In</Button>
+    <Button onClick={async () => await signIn()}>Connexion</Button>
   );
 }
