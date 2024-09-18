@@ -14,7 +14,7 @@ export default function AuthButton() {
         await signIn();
       }}
     >
-      {session.data?.user?.name} : Déconnexion
+      Déconnexion
     </Button>
   ) : (
     <Button onClick={async () => await signIn()}>Connexion</Button>

@@ -3,7 +3,7 @@ import React from "react";
 
 export default function SignInPage() {
   return (
-    <div>
+    <div className="max-w-sm mx-auto">
       <SignInForm />
     </div>
   );

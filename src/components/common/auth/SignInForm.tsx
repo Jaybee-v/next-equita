@@ -50,12 +50,15 @@ export function SignInForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col justify-center items-center w-full gap-4"
+      >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input type="email" {...field} />
@@ -67,7 +70,7 @@ export function SignInForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />

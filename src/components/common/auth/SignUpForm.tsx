@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRightFromLine } from "lucide-react";
+import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
+import { signIn } from "next-auth/react";
 
 const schema = z
   .object({
@@ -36,6 +38,7 @@ const schema = z
   });
 
 export const SignUpForm = () => {
+  // const router = useRouter()
   const [userType, setUserType] = useState("rider");
 
   const form = useForm<z.infer<typeof schema>>({
@@ -50,11 +53,31 @@ export const SignUpForm = () => {
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     console.log(values);
+    try {
+      const user = await new UserRepositoryImpl().save({
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        lastname: values.lastname,
+        role: userType,
+      });
+      console.log(user);
+      if (user) {
+        const result = await signIn("credentials", {
+          username: values.email,
+          password: values.password,
+          redirect: true,
+        });
+        console.log(result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} method="post">
         <section className="max-w-md mx-auto">
           <FormField
             control={form.control}

@@ -1,8 +1,10 @@
 import AuthButton from "@/app/AuthButton.server";
+import { auth } from "@/auth";
 import Link from "next/link";
 import React from "react";
 
-export const Navbar = () => {
+export const Navbar = async () => {
+  const session = await auth();
   return (
     <header className="flex justify-between items-center max-w-6xl mx-auto py-2">
       <div>
@@ -22,8 +24,8 @@ export const Navbar = () => {
             <Link href="/students">Élèves</Link>
           </li>
         </ul>
-        <div>
-          <Link href="/signup">Créer un compte</Link>
+        <div className="flex items-center gap-4">
+          {!session && <Link href="/signup">Créer un compte</Link>}
           <AuthButton />
         </div>
       </nav>
