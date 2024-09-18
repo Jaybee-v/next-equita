@@ -40,11 +40,13 @@ export function SignInForm() {
       password: values.password,
       redirect: false,
     });
+    console.log(result);
 
     if (result?.error) {
       setError("Identifiants invalides");
     } else {
       router.push("/"); // Redirigez vers la page souhaitée après la connexion
+      router.refresh();
     }
   };
 

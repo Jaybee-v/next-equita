@@ -1,16 +1,34 @@
 import { auth } from "@/auth";
+import { UserCard } from "@/components/common/user/UserCard";
 
 export default async function Home() {
   const session = await auth();
 
   if (session && session.user)
     return (
-      <main className="flex flex-col gap-y-4 pt-24 justify-center items-center">
+      <main className="p-6">
         <h1 className="text-4xl font-bold tracking-wide">Equita-planner</h1>
+        {session.user.role === "rider" && (
+          <div>
+            <p className="text-lg">Vous êtes cavalier</p>
+            <UserCard session={session} />
+          </div>
+        )}
+        {session.user.role === "teacher" && (
+          <div>
+            <p className="text-lg">Vous êtes moniteur</p>
+            <UserCard session={session} />
+          </div>
+        )}
+        {session.user.role === "stable" && (
+          <div>
+            <p className="text-lg">Vous êtes gestionnaire de centre équestre</p>
+            <UserCard session={session} />
+          </div>
+        )}
         <p className="text-lg">
           Bienvenue, {session.user.name} / {session.user.role}
         </p>
-        <pre>{JSON.stringify(session)}</pre>
       </main>
     );
 
