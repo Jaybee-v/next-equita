@@ -98,6 +98,9 @@ const authOptions: NextAuthConfig = {
   theme: {
     buttonText: "Se connecter",
   },
+  pages: {
+    signIn: "/signin",
+  },
   debug: true, // Enable debug mode
 };
 

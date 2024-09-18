@@ -22,4 +22,8 @@ export default auth((req) => {
       )
     );
   }
+
+  if (req.auth && reqUrl.pathname === "/signup") {
+    return NextResponse.redirect(new URL(`/`, reqUrl));
+  }
 });
