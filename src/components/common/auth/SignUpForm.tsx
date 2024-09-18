@@ -192,7 +192,7 @@ export const SignUpForm = () => {
             </span>
           ) : null}
         </FormLabel>
-        <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-4xl mx-auto">
+        <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-xl mx-auto">
           <article
             className="cursor-pointer group mx-auto"
             onClick={() => setUserType("rider")}
