@@ -54,10 +54,10 @@ export default async function Home() {
           d&apos;optimiser vos réservations,{" "}
           <b>Equita-planner est fait pour vous !</b>
         </p>
-        <div>
+        <div className="px-6">
           <h3>Les étapes</h3>
-          <section className="grid md:grid-cols-4 gap-6 p-6">
-            <article className="p-4 shadow flex flex-col justify-evenly">
+          <section className="grid md:grid-cols-4 gap-6 py-6">
+            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
               <h4 className="text-lg font-bold tracking-wide">
                 Créez votre compte
               </h4>
@@ -66,13 +66,13 @@ export default async function Home() {
                 de gestion de réservations.
               </p>
             </article>
-            <article className="p-4 shadow flex flex-col justify-evenly">
+            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
               <h4 className="text-lg font-bold tracking-wide">
                 Configurez votre profil
               </h4>
               <p>Renseignez vos informations personnelles.</p>
             </article>
-            <article className="p-4 shadow flex flex-col justify-evenly">
+            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
               <h4 className="text-lg font-bold tracking-wide">
                 Planifiez vos séances
               </h4>
@@ -81,7 +81,7 @@ export default async function Home() {
                 pour réserver vos cours.
               </p>
             </article>
-            <article className="p-4 shadow flex flex-col justify-evenly">
+            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
               <h4 className="text-lg font-bold tracking-wide">
                 Validez votre réservation
               </h4>

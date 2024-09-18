@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --background: #c3d1e7;
   --foreground: #171717;
 }
 
@@ -15,8 +14,6 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -28,7 +25,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 216 68% 90%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
