@@ -6,8 +6,8 @@ import React from "react";
 export default async function PublicContactPage() {
   const session = await auth();
   return (
-    <main className="pt-8">
-      <div className="bg-card max-w-lg mx-auto p-6 rounded drop-shadow-md mb-16">
+    <main className="lg:pt-8">
+      <div className="bg-card max-w-lg mx-auto p-6 lg:rounded lg:drop-shadow-md lg:mb-16">
         <h1 className="text-sky-700 text-2xl font-semibold tracking-wide text-center">
           Contactez-nous
         </h1>

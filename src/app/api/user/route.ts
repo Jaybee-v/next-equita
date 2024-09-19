@@ -1,13 +1,13 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { hash } from "bcrypt";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
+import { hashPassword } from "@/lib/bcrypt";
 
 const userSchema = z.object({
   email: z.string().email(),
   name: z.string().min(2),
-  lastname: z.string().min(2),
+  lastname: z.string(),
   role: z.enum(["rider", "stable", "teacher"]),
   password: z.string().min(8),
 });
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const user = userSchema.parse(body);
 
-    const hashedPassword = await hash(user.password, 10);
+    const hashedPassword = await hashPassword(user.password);
 
     const createUser = await prisma.user.create({
       data: {
