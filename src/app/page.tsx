@@ -3,6 +3,12 @@ import { UserCard } from "@/components/common/user/UserCard";
 import { LinkSecondary } from "@/components/ui/LinkSecondary";
 import AuthButton from "./AuthButton.server";
 import { Footer } from "@/components/ui/Footer";
+import {
+  CalendarCheck2,
+  CalendarDays,
+  MousePointerClick,
+  UserRoundPen,
+} from "lucide-react";
 
 export default async function Home() {
   const session = await auth();
@@ -70,6 +76,9 @@ export default async function Home() {
           </h3>
           <section className="grid md:grid-cols-4 gap-6 py-6 mt-6">
             <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <UserRoundPen size={50} className="text-background" />
+              </article>
               <h4 className="text-xl font-semibold text-sky-800">
                 Créez votre compte
               </h4>
@@ -79,6 +88,9 @@ export default async function Home() {
               </p>
             </article>
             <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <MousePointerClick size={50} className="text-background" />
+              </article>
               <h4 className="text-xl font-semibold text-sky-800">
                 Gérez vos réservations en quelques clics
               </h4>
@@ -87,6 +99,9 @@ export default async function Home() {
               </p>
             </article>
             <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <CalendarCheck2 size={50} className="text-background" />
+              </article>
               <h4 className="text-xl font-semibold text-sky-800">
                 Améliorez la communication
               </h4>
@@ -96,6 +111,9 @@ export default async function Home() {
               </p>
             </article>
             <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <CalendarDays size={50} className="text-background" />
+              </article>
               <h4 className="text-xl font-semibold text-sky-800">
                 Un planning clair
               </h4>
