@@ -14,7 +14,9 @@ export const userApi = {
     console.log(createdUser);
     const data = await createdUser.json();
     console.log(data);
-
-    return data;
+    if (createdUser.status === 201) {
+      return data;
+    }
+    throw new Error(data.error);
   },
 };

@@ -1,23 +1,67 @@
-import { CreateUserDto } from "@/domain/dtos/create-user.dto";
-// import { User } from "@/domain/entities/User";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { hash } from "bcrypt";
+import { z } from "zod";
+import { Prisma } from "@prisma/client";
+
+const userSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(2),
+  lastname: z.string().min(2),
+  role: z.enum(["rider", "stable", "teacher"]),
+  password: z.string().min(8),
+});
 
 export async function POST(req: Request) {
-  const user: CreateUserDto = await req.json();
   try {
+    const body = await req.json();
+    const user = userSchema.parse(body);
+
+    const hashedPassword = await hash(user.password, 10);
+
     const createUser = await prisma.user.create({
       data: {
         email: user.email,
         name: user.name,
         lastname: user.lastname,
         role: user.role,
-        password: user.password,
+        password: hashedPassword,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        lastname: true,
+        role: true,
+        createdAt: true,
       },
     });
 
-    return NextResponse.json(createUser);
+    return NextResponse.json(createUser, { status: 201 });
   } catch (error) {
-    throw new Error();
+    console.error(error);
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Données d'entrée invalides", details: error.errors },
+        { status: 400 }
+      );
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return NextResponse.json(
+          { error: "Un utilisateur avec cet email existe déjà." },
+          { status: 409 }
+        );
+      }
+    }
+
+    return NextResponse.json(
+      {
+        error: "Une erreur est survenue lors de la création de l'utilisateur.",
+      },
+      { status: 500 }
+    );
   }
 }

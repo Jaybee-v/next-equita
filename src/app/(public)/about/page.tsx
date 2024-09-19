@@ -4,7 +4,7 @@ import React from "react";
 export default function PublicAboutPage() {
   return (
     <main>
-      <div className="bg-gray-50 pt-16">
+      <div className="bg-background pt-16">
         {/* Section principale */}
         <section className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-12">
@@ -40,7 +40,7 @@ export default function PublicAboutPage() {
 
             {/* Détails du parcours */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <article className="p-6 bg-sky-100 rounded-lg drop-shadow-md">
+              <article className="p-6 bg-background rounded-lg drop-shadow-md">
                 <h3 className="text-2xl font-semibold text-sky-700">
                   Formation et expérience équestre
                 </h3>
@@ -53,7 +53,7 @@ export default function PublicAboutPage() {
                 </p>
               </article>
 
-              <article className="p-6 bg-sky-100 rounded-lg drop-shadow-md">
+              <article className="p-6 bg-background rounded-lg drop-shadow-md">
                 <h3 className="text-2xl font-semibold text-sky-700">
                   Transition vers la technologie
                 </h3>
@@ -87,7 +87,7 @@ export default function PublicAboutPage() {
         </section>
 
         {/* Vision */}
-        <section className="bg-background text-white py-12">
+        <section className="bg-white  py-12">
           <div className="container mx-auto px-4">
             <article className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-sky-700">Notre vision</h2>
