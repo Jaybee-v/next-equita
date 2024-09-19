@@ -1,5 +1,14 @@
 import { auth } from "@/auth";
 import { UserCard } from "@/components/common/user/UserCard";
+import { LinkSecondary } from "@/components/ui/LinkSecondary";
+import AuthButton from "./AuthButton.server";
+import { Footer } from "@/components/ui/Footer";
+import {
+  CalendarCheck2,
+  CalendarDays,
+  MousePointerClick,
+  UserRoundPen,
+} from "lucide-react";
 
 export default async function Home() {
   const session = await auth();
@@ -33,66 +42,90 @@ export default async function Home() {
     );
 
   return (
-    <main className="flex flex-col gap-y-4 pt-24 justify-center items-center">
-      <h1 className="max-lg:text-4xl text-7xl text-center font-bold tracking-wide">
+    <main className="flex flex-col gap-y-4 pt-24 justify-center items-center ">
+      {/* Hero Section */}
+      <h1 className="max-lg:text-4xl text-7xl text-center font-bold tracking-wide cursor-default">
         Simplifiez les réservations de <br />
         <span className="font-black text-sky-700 tracking-tight">
           vos cours et activités équestres
         </span>
       </h1>
-      <h2 className="mb-6 mt-4 max-lg:text-lg max-lg:text-center text-2xl">
-        Avec notre plateforme intuitive, réservez vos séances en quelques clics.
+      <h2 className="mb-6 mt-4 max-lg:text-lg max-lg:text-center text-2xl text-gray-700 cursor-default">
+        Un outil complet pour centres équestres, moniteurs et cavaliers.
       </h2>
-      <section className="bg-card w-full my-10">
-        <p className="text-lg text-gray-600 mt-4 px-4 max-w-4xl mx-auto">
-          Rejoignez-nous et découvrez une plateforme dédiée à la gestion des{" "}
-          <b>leçons d&apos;équitation.</b>
-          <br />
-          Que vous soyez <b>un cavalier</b> à la recherche de nouvelles
-          expériences, <b>un enseignant indépendant</b> souhaitant partager
-          votre savoir-faire, ou <b>un centre équestre</b> désireux
-          d&apos;optimiser vos réservations,{" "}
-          <b>Equita-planner est fait pour vous !</b>
+      <section className="w-full flex justify-center gap-12">
+        <article>
+          <LinkSecondary label="Créer un compte" href="/signup" />
+        </article>
+        <AuthButton />
+      </section>
+
+      {/* Introduction */}
+      <section className="w-full my-10 max-w-7xl mx-auto">
+        <p className="text-lg text-gray-600 mt-4 px-4 max-w-4xl mx-auto text-center cursor-default">
+          Découvrez une plateforme conçue pour faciliter la gestion des{" "}
+          <b>leçons d&apos;équitation.</b> Que vous soyez <b>un cavalier</b>{" "}
+          cherchant de nouvelles expériences, <b>un moniteur</b> partageant
+          votre passion, ou un <b>centre équestre</b> optimisant vos
+          réservations, <b>Equita-planner est fait pour vous !</b>
         </p>
-        <div className="px-6">
-          <h3>Les étapes</h3>
-          <section className="grid md:grid-cols-4 gap-6 py-6">
-            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
-              <h4 className="text-lg font-bold tracking-wide">
+        {/* Features Section */}
+        <div className="p-6 mt-10 cursor-default">
+          <h3 className="text-2xl font-bold tracking-wide text-center text-sky-800">
+            Ce que propose <span>Equita-planner</span>
+          </h3>
+          <section className="grid md:grid-cols-4 gap-6 py-6 mt-6">
+            <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <UserRoundPen size={50} className="text-background" />
+              </article>
+              <h4 className="text-xl font-semibold text-sky-800">
                 Créez votre compte
               </h4>
-              <p>
-                Inscrivez-vous en quelques clics pour accéder à notre plateforme
-                de gestion de réservations.
+              <p className="mt-2 text-gray-600">
+                Inscrivez-vous en toute sécurité et accédez à votre espace
+                personnel.
               </p>
             </article>
-            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
-              <h4 className="text-lg font-bold tracking-wide">
-                Configurez votre profil
+            <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <MousePointerClick size={50} className="text-background" />
+              </article>
+              <h4 className="text-xl font-semibold text-sky-800">
+                Gérez vos réservations en quelques clics
               </h4>
-              <p>Renseignez vos informations personnelles.</p>
-            </article>
-            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
-              <h4 className="text-lg font-bold tracking-wide">
-                Planifiez vos séances
-              </h4>
-              <p>
-                Consultez les disponibilités des moniteurs et centres équestres
-                pour réserver vos cours.
+              <p className="mt-2 text-gray-600">
+                Suivez vos réservations et organisez vos activités sans tracas.
               </p>
             </article>
-            <article className="p-4 shadow flex flex-col justify-evenly bg-background">
-              <h4 className="text-lg font-bold tracking-wide">
-                Validez votre réservation
+            <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <CalendarCheck2 size={50} className="text-background" />
+              </article>
+              <h4 className="text-xl font-semibold text-sky-800">
+                Améliorez la communication
               </h4>
-              <p>
-                Confirmez votre réservation et recevez une confirmation par
-                email.
+              <p className="mt-2 text-gray-600">
+                Facilitez la prise de rendez-vous avec vos cavaliers et
+                enseignez en toute tranquillité.
+              </p>
+            </article>
+            <article className="p-6 shadow-md hover:shadow-lg bg-white flex flex-col justify-between rounded-lg transition-all duration-300">
+              <article className="flex justify-center p-4 bg-primary rounded-full w-fit mx-auto">
+                <CalendarDays size={50} className="text-background" />
+              </article>
+              <h4 className="text-xl font-semibold text-sky-800">
+                Un planning clair
+              </h4>
+              <p className="mt-2 text-gray-600">
+                Bénéficiez d&apos;un planning organisé et d&apos;une
+                confirmation par email pour chaque réservation.
               </p>
             </article>
           </section>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

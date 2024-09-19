@@ -1,8 +1,9 @@
-import AuthButton from "@/app/AuthButton.server";
 import { auth } from "@/auth";
-import { LinkSecondary } from "@/components/ui/LinkSecondary";
+import { Logo } from "@/components/ui/Logo";
 import Link from "next/link";
 import React from "react";
+import { PublicNavbar } from "./PublicNavbar";
+import { UserNavbar } from "./UserNavbar";
 
 export const Navbar = async () => {
   const session = await auth();
@@ -10,29 +11,15 @@ export const Navbar = async () => {
     <div className="w-full bg-card">
       <header className="flex justify-between items-center max-w-6xl mx-auto py-2">
         <div>
-          <Link href="/" className="font-bold tracking-wide">
+          <Link
+            href="/"
+            className="font-bold tracking-wide flex items-center gap-2"
+          >
+            <Logo size="small" />
             Equita-planner
           </Link>
         </div>
-        <nav className="flex items-center gap-6">
-          <ul className="flex gap-6">
-            <li>
-              <Link href="/planning">Planning</Link>
-            </li>
-            <li>
-              <Link href="/courses">Cours</Link>
-            </li>
-            <li>
-              <Link href="/students">Élèves</Link>
-            </li>
-          </ul>
-          {!session && (
-            <div className="flex items-center gap-4">
-              <LinkSecondary label="Créer un compte" href="/signup" />
-              <AuthButton />
-            </div>
-          )}
-        </nav>
+        {!session ? <PublicNavbar /> : <UserNavbar session={session} />}
       </header>
     </div>
   );

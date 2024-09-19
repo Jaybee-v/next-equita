@@ -5,7 +5,7 @@ export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
 
-const publicPaths = ["/", "/signup"];
+const publicPaths = ["/", "/signup", "/about", "/contact"];
 
 export default auth((req) => {
   const reqUrl = new URL(req.url);

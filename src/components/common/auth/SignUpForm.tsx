@@ -18,12 +18,23 @@ import Image from "next/image";
 import { ArrowRightFromLine } from "lucide-react";
 import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
 import { signIn } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
+
+interface UserTypeSelectorProps {
+  title: string;
+  description: string;
+  image: string;
+  isSelected: boolean;
+  onSelect: () => void;
+}
 
 const schema = z
   .object({
-    name: z.string(),
-    lastname: z.string().nonempty("Le nom est requis"),
-    email: z.string().email("Une adresse email valide est requis"),
+    name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+    lastname: z
+      .string()
+      .min(2, "Le prénom doit contenir au moins 2 caractères"),
+    email: z.string().email("Une adresse email valide est requise"),
     password: z
       .string()
       .min(8, "Le mot de passe doit contenir au moins 8 caractères")
@@ -37,14 +48,53 @@ const schema = z
     path: ["confirmPassword"],
   });
 
+type UserType = "rider" | "teacher" | "stable";
+
+const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({
+  title,
+  description,
+  image,
+  isSelected,
+  onSelect,
+}) => (
+  <article className="cursor-pointer group mx-auto" onClick={onSelect}>
+    <Image
+      src={image}
+      alt={title}
+      width={100}
+      height={100}
+      className={`rounded drop-shadow ${
+        isSelected ? "brightness-105" : "brightness-50 hover:brightness-105"
+      } transition`}
+    />
+    <section
+      className={`${
+        isSelected ? "" : "hidden group-hover:block"
+      } w-full lg:absolute`}
+    >
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <p
+        className={`${
+          isSelected ? "hidden" : ""
+        } text-sm text-muted-foreground`}
+      >
+        {description}
+      </p>
+    </section>
+  </article>
+);
+
 export const SignUpForm = () => {
-  // const router = useRouter()
-  const [userType, setUserType] = useState("rider");
+  const { toast } = useToast();
+  const [userType, setUserType] = useState<UserType>("rider");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
+      name: "",
+      lastname: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -52,7 +102,7 @@ export const SignUpForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    console.log(values);
+    setIsSubmitting(true);
     try {
       const user = await new UserRepositoryImpl().save({
         email: values.email,
@@ -61,19 +111,68 @@ export const SignUpForm = () => {
         lastname: values.lastname,
         role: userType,
       });
-      console.log(user);
+
       if (user) {
         const result = await signIn("credentials", {
           username: values.email,
           password: values.password,
-          redirect: true,
         });
-        console.log(result);
+
+        if (result?.error) {
+          console.log(result.error);
+
+          toast({
+            title: "Erreur de connexion",
+            description:
+              "Impossible de vous connecter automatiquement. Veuillez réessayer.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Inscription réussie",
+            description: "Vous êtes maintenant connecté.",
+          });
+        }
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast({
+          title: "Erreur d'inscription",
+          description:
+            error.message || "Une erreur est survenue lors de l'inscription.",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const userTypeOptions: {
+    type: UserType;
+    title: string;
+    description: string;
+    image: string;
+  }[] = [
+    {
+      type: "rider",
+      title: "Cavalier",
+      description: "Je suis un cavalier",
+      image: "/images/rider_1.jpg",
+    },
+    {
+      type: "teacher",
+      title: "Moniteur",
+      description: "Je suis moniteur indépendant",
+      image: "/images/teacher_1.jpg",
+    },
+    {
+      type: "stable",
+      title: "Centre équestre",
+      description: "Je représente un centre équestre",
+      image: "/images/center_2.jpg",
+    },
+  ];
 
   return (
     <Form {...form}>
@@ -178,117 +277,30 @@ export const SignUpForm = () => {
         </section>
         <FormLabel className="lg:flex justify-center items-baseline gap-2">
           Je suis{" "}
-          {userType === "rider" ? (
-            <span className="text-lg font-black tracking-wide text-green-600">
-              Cavalier
-            </span>
-          ) : userType === "teacher" ? (
-            <span className="text-lg font-black tracking-wide text-green-600">
-              Moniteur indépendant
-            </span>
-          ) : userType === "stable" ? (
-            <span className="text-lg font-black tracking-wide text-green-600">
-              répresentant d&apos;un Centre équestre
-            </span>
-          ) : null}
+          <span className="text-lg font-black tracking-wide text-green-600">
+            {userType === "rider" && "Cavalier"}
+            {userType === "teacher" && "Moniteur indépendant"}
+            {userType === "stable" && "représentant d'un Centre équestre"}
+          </span>
         </FormLabel>
+
         <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-xl mx-auto">
-          <article
-            className="cursor-pointer group mx-auto"
-            onClick={() => setUserType("rider")}
-          >
-            <Image
-              src="/images/rider_1.jpg"
-              alt="logo"
-              width={100}
-              height={100}
-              className={`rounded drop-shadow ${
-                userType === "rider"
-                  ? "brightness-105"
-                  : "brightness-50 hover:brightness-105"
-              } transition`}
+          {userTypeOptions.map((option) => (
+            <UserTypeSelector
+              key={option.type}
+              {...option}
+              isSelected={userType === option.type}
+              onSelect={() => setUserType(option.type)}
             />
-            <section
-              className={`${
-                userType === "rider" ? "" : "hidden group-hover:block"
-              }  w-full lg:absolute`}
-            >
-              <h3 className="text-lg font-semibold">Cavalier</h3>
-              <p
-                className={`${
-                  userType === "rider" ? "hidden" : ""
-                } text-sm text-muted-foreground`}
-              >
-                Je suis un cavalier
-              </p>
-            </section>
-          </article>
-          <article
-            className="cursor-pointer group mx-auto"
-            onClick={() => setUserType("teacher")}
-          >
-            <Image
-              src="/images/teacher_1.jpg"
-              alt="logo"
-              width={100}
-              height={100}
-              className={`rounded drop-shadow ${
-                userType === "teacher"
-                  ? "brightness-105"
-                  : "brightness-50 hover:brightness-105"
-              } transition`}
-            />
-            <section
-              className={`${
-                userType === "teacher" ? "" : "hidden group-hover:block"
-              }  w-full lg:absolute`}
-            >
-              <h3 className="text-lg font-semibold">Moniteur</h3>
-              <p
-                className={`${
-                  userType === "teacher" ? "hidden" : ""
-                } text-sm text-muted-foreground`}
-              >
-                Je suis moniteur indépendant
-              </p>
-            </section>
-          </article>
-          <article
-            className="cursor-pointer group mx-auto"
-            onClick={() => setUserType("stable")}
-          >
-            <Image
-              src="/images/center_2.jpg"
-              alt="logo"
-              width={100}
-              height={100}
-              className={`rounded drop-shadow ${
-                userType === "stable"
-                  ? "brightness-105"
-                  : "brightness-50 hover:brightness-105"
-              } transition`}
-            />
-            <section
-              className={`${
-                userType === "stable" ? "" : "hidden group-hover:block"
-              }  w-full lg:absolute`}
-            >
-              <h3 className="text-lg font-semibold">Centre équestre</h3>
-              <p
-                className={`${
-                  userType === "stable" ? "hidden" : ""
-                } text-sm text-muted-foreground`}
-              >
-                Je représente un centre équestre
-              </p>
-            </section>
-          </article>
+          ))}
         </section>
-        <article className="lg:mt-8 max-w-md mx-auto">
-          <Button type="submit" className="w-full">
-            Je poursuis mon inscription <ArrowRightFromLine className="ms-4" />
-          </Button>
-        </article>
+
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting
+            ? "Inscription en cours..."
+            : "Je poursuis mon inscription"}
+          <ArrowRightFromLine className="ms-4" />
+        </Button>
       </form>
     </Form>
   );
