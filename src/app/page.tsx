@@ -44,13 +44,13 @@ export default async function Home() {
   return (
     <main className="flex flex-col gap-y-4 pt-24 justify-center items-center ">
       {/* Hero Section */}
-      <h1 className="max-lg:text-4xl text-7xl text-center font-bold tracking-wide">
+      <h1 className="max-lg:text-4xl text-7xl text-center font-bold tracking-wide cursor-default">
         Simplifiez les réservations de <br />
         <span className="font-black text-sky-700 tracking-tight">
           vos cours et activités équestres
         </span>
       </h1>
-      <h2 className="mb-6 mt-4 max-lg:text-lg max-lg:text-center text-2xl text-gray-700">
+      <h2 className="mb-6 mt-4 max-lg:text-lg max-lg:text-center text-2xl text-gray-700 cursor-default">
         Un outil complet pour centres équestres, moniteurs et cavaliers.
       </h2>
       <section className="w-full flex justify-center gap-12">
@@ -62,7 +62,7 @@ export default async function Home() {
 
       {/* Introduction */}
       <section className="w-full my-10 max-w-7xl mx-auto">
-        <p className="text-lg text-gray-600 mt-4 px-4 max-w-4xl mx-auto text-center">
+        <p className="text-lg text-gray-600 mt-4 px-4 max-w-4xl mx-auto text-center cursor-default">
           Découvrez une plateforme conçue pour faciliter la gestion des{" "}
           <b>leçons d&apos;équitation.</b> Que vous soyez <b>un cavalier</b>{" "}
           cherchant de nouvelles expériences, <b>un moniteur</b> partageant
@@ -70,7 +70,7 @@ export default async function Home() {
           réservations, <b>Equita-planner est fait pour vous !</b>
         </p>
         {/* Features Section */}
-        <div className="p-6 mt-10">
+        <div className="p-6 mt-10 cursor-default">
           <h3 className="text-2xl font-bold tracking-wide text-center text-sky-800">
             Ce que propose <span>Equita-planner</span>
           </h3>
