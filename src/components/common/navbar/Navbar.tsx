@@ -1,6 +1,7 @@
 import AuthButton from "@/app/AuthButton.server";
 import { auth } from "@/auth";
 import { LinkSecondary } from "@/components/ui/LinkSecondary";
+import { Logo } from "@/components/ui/Logo";
 import Link from "next/link";
 import React from "react";
 
@@ -10,7 +11,11 @@ export const Navbar = async () => {
     <div className="w-full bg-card">
       <header className="flex justify-between items-center max-w-6xl mx-auto py-2">
         <div>
-          <Link href="/" className="font-bold tracking-wide">
+          <Link
+            href="/"
+            className="font-bold tracking-wide flex items-center gap-2"
+          >
+            <Logo size="small" />
             Equita-planner
           </Link>
         </div>

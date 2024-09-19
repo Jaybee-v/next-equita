@@ -81,7 +81,7 @@ export function SignInForm() {
           )}
         />
         {error && <p className="text-red-500">{error}</p>}
-        <Button>Connexion</Button>
+        <Button className="w-full">Connexion</Button>
       </form>
     </Form>
   );
