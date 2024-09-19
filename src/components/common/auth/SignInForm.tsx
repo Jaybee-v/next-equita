@@ -63,7 +63,7 @@ export function SignInForm() {
             <FormItem className="w-full">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" {...field} />
+                <Input type="email" placeholder="Email" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -75,7 +75,7 @@ export function SignInForm() {
             <FormItem className="w-full">
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input type="password" {...field} />
+                <Input type="password" placeholder="Mot de passe" {...field} />
               </FormControl>
             </FormItem>
           )}
