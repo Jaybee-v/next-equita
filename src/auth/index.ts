@@ -1,6 +1,7 @@
 import NextAuth, { DefaultSession, NextAuthConfig, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
+import { comparePassword } from "@/lib/bcrypt";
 
 export const BASE_PATH = "/api/auth";
 
@@ -50,8 +51,13 @@ const authOptions: NextAuthConfig = {
           console.log("No user found");
           return null;
         }
+        const isCorrectPassword = await comparePassword(
+          credentials.password as string,
+          user.password
+        );
+        console.log("Password match:", isCorrectPassword);
 
-        if (user.password !== credentials.password) {
+        if (!isCorrectPassword) {
           console.log("Password mismatch");
           return null;
         }

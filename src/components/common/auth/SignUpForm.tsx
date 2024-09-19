@@ -31,9 +31,7 @@ interface UserTypeSelectorProps {
 const schema = z
   .object({
     name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-    lastname: z
-      .string()
-      .min(2, "Le prénom doit contenir au moins 2 caractères"),
+    lastname: z.string(),
     email: z.string().email("Une adresse email valide est requise"),
     password: z
       .string()
@@ -295,7 +293,7 @@ export const SignUpForm = () => {
           ))}
         </section>
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full mt-6" disabled={isSubmitting}>
           {isSubmitting
             ? "Inscription en cours..."
             : "Je poursuis mon inscription"}

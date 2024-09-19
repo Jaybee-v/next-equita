@@ -14,13 +14,13 @@ export const UserNavbar = ({ session }: UserNavbarProps) => {
           <Link href="/">Accueil</Link>
         </li>
         <li>
-          <Link href="/about">A propos</Link>
+          <Link href="/about">Planning</Link>
         </li>
         <li>
-          <Link href="/contact">Contact</Link>
+          <Link href="/contact">Cavaliers</Link>
         </li>
       </ul>
-      {session.user.name}
+      <Link href="/">{session.user.name}</Link>
     </nav>
   );
 };
