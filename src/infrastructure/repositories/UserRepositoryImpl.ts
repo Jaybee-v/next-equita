@@ -4,7 +4,7 @@ import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userApi } from "../api/user-api";
 
 export class UserRepositoryImpl implements UserRepository {
-  async save(user: CreateUserDto): Promise<User | { error: string }> {
+  async save(user: CreateUserDto): Promise<User> {
     return userApi.save(user);
   }
 }
