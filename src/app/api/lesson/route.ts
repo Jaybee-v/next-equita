@@ -10,6 +10,7 @@ const lessonSchema = z.object({
   date: z.date(),
   start: z.string(),
   end: z.string(),
+  stableId: z.string(),
   // price: z.number().int().positive(),
   isPublic: z.boolean(),
   emptyPlaces: z.number(),
@@ -33,6 +34,7 @@ export async function POST(req: Request) {
         end: lesson.end,
         isPublic: lesson.isPublic,
         emptyPlaces: lesson.emptyPlaces,
+        stableId: lesson.stableId,
       },
       select: {
         id: true,

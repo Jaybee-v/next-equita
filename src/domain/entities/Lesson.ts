@@ -8,6 +8,7 @@ export interface Lesson {
   end: string;
   isPublic: boolean;
   emptyPlaces: number;
+  stableId: string;
   createdAt: Date;
   updatedAt: Date;
 }

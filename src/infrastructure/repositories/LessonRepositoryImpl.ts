@@ -7,4 +7,8 @@ export class LessonRepositoryImpl implements LessonRepository {
   async save(lesson: CreateLessonDto): Promise<Lesson> {
     return lessonApi.save(lesson);
   }
+
+  async getLessonByStableId(stableId: string): Promise<Lesson[]> {
+    return lessonApi.getLessonByStableId(stableId);
+  }
 }

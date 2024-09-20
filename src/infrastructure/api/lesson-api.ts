@@ -17,4 +17,16 @@ export const lessonApi = {
     }
     throw new Error(data.error);
   },
+
+  async getLessonByStableId(stableId: string): Promise<Lesson[]> {
+    const response = await fetch(
+      `http://localhost:3000/api/lesson/${stableId}`
+    );
+    const data = await response.json();
+
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
 };

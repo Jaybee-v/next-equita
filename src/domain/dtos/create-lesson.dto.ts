@@ -7,4 +7,5 @@ export interface CreateLessonDto {
   end: string;
   isPublic: boolean;
   emptyPlaces: number;
+  stableId: string;
 }

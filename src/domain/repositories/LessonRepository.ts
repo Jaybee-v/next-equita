@@ -3,4 +3,5 @@ import { Lesson } from "../entities/Lesson";
 
 export interface LessonRepository {
   save(lesson: CreateLessonDto): Promise<Lesson>;
+  getLessonByStableId(stableId: string): Promise<Lesson[]>;
 }

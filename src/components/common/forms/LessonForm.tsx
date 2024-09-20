@@ -25,6 +25,11 @@ import disciplines from "@/resources/disciplines.json";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
+import { Session } from "next-auth";
+
+interface LessonFormProps {
+  session: Session;
+}
 
 const schema = z.object({
   title: z.string().min(3).max(255),
@@ -36,9 +41,10 @@ const schema = z.object({
   // price: z.number().int().positive(),
   isPublic: z.boolean(),
   emptyPlaces: z.string(),
+  stableId: z.string(),
 });
 
-export const LessonForm = () => {
+export const LessonForm = ({ session }: LessonFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -55,6 +61,7 @@ export const LessonForm = () => {
       // price: 0,
       isPublic: false,
       emptyPlaces: "",
+      stableId: session.user.id as string,
     },
   });
 
@@ -71,6 +78,7 @@ export const LessonForm = () => {
         end: data.end.toString(),
         isPublic: data.isPublic,
         emptyPlaces: parseInt(data.emptyPlaces),
+        stableId: data.stableId,
       });
       console.log("RESULT LESSON HERE", lesson);
       if (lesson) {
