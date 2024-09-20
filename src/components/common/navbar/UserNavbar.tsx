@@ -14,7 +14,7 @@ export const UserNavbar = ({ session }: UserNavbarProps) => {
           <Link href="/">Accueil</Link>
         </li>
         <li>
-          <Link href="/about">Planning</Link>
+          <Link href="/lessons">Planning</Link>
         </li>
         <li>
           <Link href="/contact">Cavaliers</Link>

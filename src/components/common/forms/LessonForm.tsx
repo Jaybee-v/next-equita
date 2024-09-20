@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 import disciplines from "@/resources/disciplines.json";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 
 const schema = z.object({
   title: z.string().min(3).max(255),
@@ -31,12 +33,15 @@ const schema = z.object({
   date: z.string(),
   start: z.string(),
   end: z.string(),
-  price: z.number().int().positive(),
+  // price: z.number().int().positive(),
   isPublic: z.boolean(),
-  emptyPlaces: z.number().int().positive(),
+  emptyPlaces: z.string(),
 });
 
 export const LessonForm = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
@@ -47,14 +52,48 @@ export const LessonForm = () => {
       date: new Date().toISOString().split("T")[0],
       start: "",
       end: "",
-      price: 0,
+      // price: 0,
       isPublic: false,
-      emptyPlaces: 0,
+      emptyPlaces: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    console.log(data);
+    setIsSubmitting(true);
+    try {
+      console.log(data);
+      const lesson = await new LessonRepositoryImpl().save({
+        title: data.title,
+        description: data.description || "",
+        type: data.type,
+        date: new Date(data.date),
+        start: data.start.toString(),
+        end: data.end.toString(),
+        isPublic: data.isPublic,
+        emptyPlaces: parseInt(data.emptyPlaces),
+      });
+      console.log("RESULT LESSON HERE", lesson);
+      if (lesson) {
+        toast({
+          title: "Leçon créée",
+          description: `La leçon ${lesson.title} a bien été créée.`,
+        });
+        form.reset();
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        console.log("ICI ERROR ?");
+
+        toast({
+          title: "Erreur",
+          description: "Impossible de créer la leçon.",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -106,11 +145,9 @@ export const LessonForm = () => {
                 </FormControl>
                 <SelectContent>
                   {disciplines.map((d, i) => (
-                    <>
-                      <SelectItem value={d.nom} key={"discipline_" + i}>
-                        {d.nom}
-                      </SelectItem>
-                    </>
+                    <SelectItem value={d.nom} key={"discipline_" + i + d}>
+                      {d.nom}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -127,6 +164,7 @@ export const LessonForm = () => {
               <FormControl>
                 <Input {...field} type="date" />
               </FormControl>
+              <FormDescription>Déterminez la date de la leçon.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -139,7 +177,7 @@ export const LessonForm = () => {
               <FormItem>
                 <FormLabel htmlFor="start">Heure de début</FormLabel>
                 <FormControl>
-                  <Input {...field} type="time" />
+                  <Input className="w-fit" {...field} type="time" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -152,7 +190,7 @@ export const LessonForm = () => {
               <FormItem>
                 <FormLabel htmlFor="end">Heure de fin</FormLabel>
                 <FormControl>
-                  <Input {...field} type="time" />
+                  <Input className="w-fit" {...field} type="time" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -160,6 +198,39 @@ export const LessonForm = () => {
           />
         </section>
         <FormField
+          name="emptyPlaces"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="type">Places disponibles</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value.toString()}
+              >
+                <FormControl>
+                  <SelectTrigger className="w-[250px]">
+                    <SelectValue placeholder="Combien de places libres ?" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="1">Cours particulier (1 place)</SelectItem>
+                  <SelectItem value="2">2 cavaliers</SelectItem>
+                  <SelectItem value="3">3 cavaliers</SelectItem>
+                  <SelectItem value="4">4 cavaliers</SelectItem>
+                  <SelectItem value="5">5 cavaliers</SelectItem>
+                  <SelectItem value="6">6 cavaliers</SelectItem>
+                  <SelectItem value="7">7 cavaliers</SelectItem>
+                  <SelectItem value="8">8 cavaliers</SelectItem>
+                  <SelectItem value="9">9 cavaliers</SelectItem>
+                  <SelectItem value="10">10 cavaliers</SelectItem>
+                  <SelectItem value="100">+ de 10 cavaliers</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* <FormField
           control={form.control}
           name="price"
           render={({ field }) => (
@@ -171,7 +242,7 @@ export const LessonForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         {/* <FormField
           control={form.control}
           name="isPublic"
@@ -191,7 +262,9 @@ export const LessonForm = () => {
             </FormItem>
           )}
         /> */}
-        <Button>Créer la leçon</Button>
+        <Button className="w-full mt-6" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "En cours de traitement ..." : "Créer la leçon"}
+        </Button>
       </form>
     </Form>
   );

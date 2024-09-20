@@ -22,7 +22,6 @@ export default async function Home() {
           <div>
             <p className="text-lg">Vous êtes cavalier</p>
             <UserCard session={session} />
-            <LessonForm />
           </div>
         )}
         {session.user.role === "teacher" && (
@@ -35,6 +34,7 @@ export default async function Home() {
           <div>
             <p className="text-lg">Vous êtes gestionnaire de centre équestre</p>
             <UserCard session={session} />
+            <LessonForm />
           </div>
         )}
         <p className="text-lg">

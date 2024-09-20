@@ -176,6 +176,25 @@ export const SignUpForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} method="post">
         <section className="max-w-md mx-auto">
+          <FormLabel className="lg:flex justify-center items-baseline gap-2">
+            Je suis{" "}
+            <span className="text-lg font-black tracking-wide text-green-600">
+              {userType === "rider" && "Cavalier"}
+              {userType === "teacher" && "Moniteur indépendant"}
+              {userType === "stable" && "représentant d'un Centre équestre"}
+            </span>
+          </FormLabel>
+
+          <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-xl mx-auto">
+            {userTypeOptions.map((option) => (
+              <UserTypeSelector
+                key={option.type}
+                {...option}
+                isSelected={userType === option.type}
+                onSelect={() => setUserType(option.type)}
+              />
+            ))}
+          </section>
           <FormField
             control={form.control}
             name="name"
@@ -272,25 +291,6 @@ export const SignUpForm = () => {
               </FormItem>
             )}
           />
-        </section>
-        <FormLabel className="lg:flex justify-center items-baseline gap-2">
-          Je suis{" "}
-          <span className="text-lg font-black tracking-wide text-green-600">
-            {userType === "rider" && "Cavalier"}
-            {userType === "teacher" && "Moniteur indépendant"}
-            {userType === "stable" && "représentant d'un Centre équestre"}
-          </span>
-        </FormLabel>
-
-        <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-xl mx-auto">
-          {userTypeOptions.map((option) => (
-            <UserTypeSelector
-              key={option.type}
-              {...option}
-              isSelected={userType === option.type}
-              onSelect={() => setUserType(option.type)}
-            />
-          ))}
         </section>
 
         <Button type="submit" className="w-full mt-6" disabled={isSubmitting}>

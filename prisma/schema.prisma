@@ -26,9 +26,9 @@ model Lesson {
   description String?
   type        String
   date        DateTime
-  start       DateTime
-  end         DateTime
-  price       Float
+  start       String
+  end         String
+  // price       Float
   isPublic    Boolean  @default(false)
   emptyPlaces Int
 
