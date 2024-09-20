@@ -3,7 +3,7 @@ import React from "react";
 
 export default function SignUpPage() {
   return (
-    <main className="lg:py-8">
+    <main className="lg:py-4">
       <div className="bg-card max-w-3xl w-full mx-auto p-6 lg:rounded lg:drop-shadow-md">
         <h1 className="text-center text-2xl">
           Je m&apos;inscris sur{" "}

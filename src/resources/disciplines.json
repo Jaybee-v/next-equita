@@ -1,0 +1,50 @@
+[
+  {
+    "nom": "Autre",
+    "description": ""
+  },
+  {
+    "nom": "Cours d'équitation classique",
+    "description": "Cours individuels ou collectifs pour apprendre les bases de l'équitation : position, contrôle du cheval, sauts, etc."
+  },
+  {
+    "nom": "Promenade à cheval",
+    "description": "Balades à cheval en groupe ou individuelles à travers la campagne ou des sentiers désignés."
+  },
+  {
+    "nom": "Western",
+    "description": "Activités de type western, comme le barrel racing, le reining, le cutting, etc."
+  },
+  {
+    "nom": "Randonnée équestre",
+    "description": "Excursions plus longues à cheval, souvent sur plusieurs jours, avec hébergement en pleine nature."
+  },
+  {
+    "nom": "Saut d'obstacles",
+    "description": "Entraînements spécifiques pour sauter des obstacles avec un cheval, souvent proposés sous forme de cours avancés."
+  },
+  {
+    "nom": "Dressage",
+    "description": "Entraînement visant à améliorer la souplesse, la grâce et l'obéissance du cheval aux instructions du cavalier."
+  },
+  {
+    "nom": "Voltige",
+    "description": "Activité consistant à réaliser des figures acrobatiques sur un cheval en mouvement, souvent pratiquée en groupe."
+  },
+  {
+    "nom": "Attelage",
+    "description": "Conduite d'une voiture attelée à un ou plusieurs chevaux, souvent utilisée à des fins récréatives ou compétitives."
+  },
+  {
+    "nom": "Équitation thérapeutique",
+    "description": "Utilisation de l'équitation comme thérapie pour améliorer la motricité, la confiance en soi, et d'autres aspects chez les personnes ayant des besoins spécifiques."
+  },
+  {
+    "nom": "Jeux à cheval",
+    "description": "Activités ludiques impliquant des compétitions ou des jeux à dos de cheval, comme le horse-ball, le polo, etc."
+  },
+  {
+    "nom": "Élevage et soins des chevaux",
+    "description": "Activités liées à la gestion des écuries, à l'alimentation, au toilettage et à la santé des chevaux."
+  }
+]
