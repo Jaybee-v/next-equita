@@ -67,7 +67,7 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({
     />
     <section
       className={`${
-        isSelected ? "" : "hidden group-hover:block"
+        isSelected ? "" : "lg:hidden group-hover:block"
       } w-full lg:absolute`}
     >
       <h3 className="text-lg font-semibold">{title}</h3>
@@ -185,7 +185,7 @@ export const SignUpForm = () => {
             </span>
           </FormLabel>
 
-          <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-xl mx-auto">
+          <section className="flex max-lg:flex-col justify-center items-center gap-4 w-full relative py-6 max-w-xl mx-auto lg:mb-6">
             {userTypeOptions.map((option) => (
               <UserTypeSelector
                 key={option.type}
