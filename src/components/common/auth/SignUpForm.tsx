@@ -19,6 +19,13 @@ import { ArrowRightFromLine } from "lucide-react";
 import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface UserTypeSelectorProps {
   title: string;
@@ -40,6 +47,7 @@ const schema = z
       .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
       .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
     confirmPassword: z.string(),
+    level: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Les mots de passe ne correspondent pas",
@@ -96,6 +104,7 @@ export const SignUpForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      level: "0",
     },
   });
 
@@ -108,6 +117,8 @@ export const SignUpForm = () => {
         name: values.name,
         lastname: values.lastname,
         role: userType,
+        level:
+          userType === "rider" && values.level ? parseInt(values.level) : null,
       });
 
       if (user) {
@@ -291,8 +302,40 @@ export const SignUpForm = () => {
               </FormItem>
             )}
           />
-        </section>
 
+          {userType === "rider" && (
+            <FormField
+              name="level"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="type">Niveau requis</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value?.toString()}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-[250px]">
+                        <SelectValue placeholder="Niveau requis pour la leçon" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="0">Débutant</SelectItem>
+                      <SelectItem value="1">Galop 1</SelectItem>
+                      <SelectItem value="2">Galop 2</SelectItem>
+                      <SelectItem value="3">Galop 3</SelectItem>
+                      <SelectItem value="4">Galop 4</SelectItem>
+                      <SelectItem value="5">Galop 5</SelectItem>
+                      <SelectItem value="6">Galop 6</SelectItem>
+                      <SelectItem value="7">Galop 7</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+        </section>
         <Button type="submit" className="w-full mt-6" disabled={isSubmitting}>
           {isSubmitting
             ? "Inscription en cours..."

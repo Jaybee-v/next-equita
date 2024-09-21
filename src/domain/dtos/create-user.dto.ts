@@ -4,4 +4,5 @@ export interface CreateUserDto {
   name: string;
   lastname?: string;
   role: string;
+  level: number | null;
 }

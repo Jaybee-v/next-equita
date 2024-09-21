@@ -25,7 +25,7 @@ export default function PublicAboutPage() {
         </section>
 
         {/* Mon parcours */}
-        <section className="bg-white py-12 mx-auto">
+        <section className="bg-white py-12 mx-auto rounded-t-3xl">
           <div className="container mx-auto px-4  max-w-6xl w-full">
             <article className=" mx-auto mb-12">
               <h2 className="text-3xl font-bold tracking-wide drop-shadow-md text-center text-sky-700">
@@ -89,7 +89,7 @@ export default function PublicAboutPage() {
         </section>
 
         {/* Vision */}
-        <section className="bg-white  py-12">
+        <section className="bg-white rounded-t-3xl  py-12">
           <div className="container mx-auto px-4">
             <article className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-sky-700">Notre vision</h2>

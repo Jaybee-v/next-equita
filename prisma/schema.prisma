@@ -15,23 +15,25 @@ model User {
   emailVerified DateTime?
   role          String    @default("rider")
   password      String
+  level         Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Lesson {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  type        String
-  date        DateTime
-  start       String
-  end         String
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  type          String
+  date          DateTime
+  start         String
+  end           String
   // price       Float
-  isPublic    Boolean  @default(false)
-  emptyPlaces Int
-  stableId    String
+  isPublic      Boolean  @default(false)
+  emptyPlaces   Int
+  stableId      String
+  requiredLevel Int      @default(10)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

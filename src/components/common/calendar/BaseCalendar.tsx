@@ -185,6 +185,27 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
                             className="bg-gray-100 text-gray-800 rounded-xl p-2 border-s-4 border-sky-600"
                           >
                             <h4 className="font-bold">{lesson.title}</h4>
+                            <p className="text-orange-400">
+                              {lesson.requiredLevel === 10
+                                ? "Tous niveaux"
+                                : lesson.requiredLevel === 0
+                                ? "Débutant"
+                                : lesson.requiredLevel === 1
+                                ? "G1"
+                                : lesson.requiredLevel === 2
+                                ? "G2"
+                                : lesson.requiredLevel === 3
+                                ? "G3"
+                                : lesson.requiredLevel === 4
+                                ? "G4"
+                                : lesson.requiredLevel === 5
+                                ? "G5"
+                                : lesson.requiredLevel === 6
+                                ? "G6"
+                                : lesson.requiredLevel === 7
+                                ? "G7"
+                                : null}
+                            </p>
                             <p>
                               {lesson.start} - {lesson.end}
                             </p>

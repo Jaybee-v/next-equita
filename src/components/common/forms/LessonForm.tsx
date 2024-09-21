@@ -42,6 +42,7 @@ const schema = z.object({
   isPublic: z.boolean(),
   emptyPlaces: z.string(),
   stableId: z.string(),
+  requiredLevel: z.number(),
 });
 
 export const LessonForm = ({ session }: LessonFormProps) => {
@@ -62,6 +63,7 @@ export const LessonForm = ({ session }: LessonFormProps) => {
       isPublic: false,
       emptyPlaces: "",
       stableId: session.user.id as string,
+      requiredLevel: 0,
     },
   });
 
@@ -79,6 +81,7 @@ export const LessonForm = ({ session }: LessonFormProps) => {
         isPublic: data.isPublic,
         emptyPlaces: parseInt(data.emptyPlaces),
         stableId: data.stableId,
+        requiredLevel: data.requiredLevel,
       });
       console.log("RESULT LESSON HERE", lesson);
       if (lesson) {
@@ -232,6 +235,37 @@ export const LessonForm = ({ session }: LessonFormProps) => {
                   <SelectItem value="9">9 cavaliers</SelectItem>
                   <SelectItem value="10">10 cavaliers</SelectItem>
                   <SelectItem value="100">+ de 10 cavaliers</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="requiredLevel"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="type">Niveau requis</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value.toString()}
+              >
+                <FormControl>
+                  <SelectTrigger className="w-[250px]">
+                    <SelectValue placeholder="Niveau requis pour la leçon" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="10">Tous niveaux</SelectItem>
+                  <SelectItem value="0">Débutant</SelectItem>
+                  <SelectItem value="1">Galop 1</SelectItem>
+                  <SelectItem value="2">Galop 2</SelectItem>
+                  <SelectItem value="3">Galop 3</SelectItem>
+                  <SelectItem value="4">Galop 4</SelectItem>
+                  <SelectItem value="5">Galop 5</SelectItem>
+                  <SelectItem value="6">Galop 6</SelectItem>
+                  <SelectItem value="7">Galop 7</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

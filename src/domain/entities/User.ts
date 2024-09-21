@@ -3,6 +3,7 @@ export interface User {
   email: string;
   name: string;
   lastname?: string;
+  level?: number;
   role: string;
   createdAt: string;
   updatedAt: string;
