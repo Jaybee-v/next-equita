@@ -9,4 +9,7 @@ export default async function LessonsPage() {
 
   if (session && session.user.role === "stable")
     return <StableLessonsPage session={session} />;
+
+  if (session && session.user.role === "rider")
+    return <div>Hello {session.user.lastname}</div>;
 }
