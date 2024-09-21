@@ -11,4 +11,8 @@ export class LessonRepositoryImpl implements LessonRepository {
   async getLessonByStableId(stableId: string): Promise<Lesson[]> {
     return lessonApi.getLessonByStableId(stableId);
   }
+
+  async getLessonsByDate(date: string): Promise<Lesson[]> {
+    return lessonApi.getLessonsByDate(date);
+  }
 }
