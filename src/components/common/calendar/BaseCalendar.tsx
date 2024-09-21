@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Lesson } from "@/domain/entities/Lesson";
+import { LessonCalendarCard } from "./LessonCalendarCard";
 
 const START_HOUR = 7;
 const END_HOUR = 22;
@@ -152,16 +153,10 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
                             timeSlots[slotIndex].time.split(":")[0]
                           ) {
                             return (
-                              <div
+                              <LessonCalendarCard
                                 key={lesson.id}
-                                className="bg-gray-100 text-gray-800 rounded-xl p-2 border-s-4 border-sky-600"
-                              >
-                                <h4 className="font-bold">{lesson.title}</h4>
-                                <p>
-                                  {lesson.start} - {lesson.end}
-                                </p>
-                                <p>{lesson.type}</p>
-                              </div>
+                                lesson={lesson}
+                              />
                             );
                           }
                         })}

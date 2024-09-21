@@ -4,6 +4,7 @@ import { SearchComponent } from "../../calendar/SearchComponent";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { formatDate } from "@/lib/dates";
 import { Lesson } from "@/domain/entities/Lesson";
+import { LessonCalendarCard } from "../../calendar/LessonCalendarCard";
 
 export const PublicLessonsPage = () => {
   const [currentDate, setCurrentDate] = useState(formatDate(new Date()));
@@ -29,7 +30,11 @@ export const PublicLessonsPage = () => {
         currentDate={currentDate}
         setCurrentDate={setCurrentDate}
       />
-      <pre>{JSON.stringify(lessons)}</pre>
+      <section className="grid grid-cols-4">
+        {lessons.map((lesson) => (
+          <LessonCalendarCard key={lesson.id} lesson={lesson} />
+        ))}
+      </section>
     </div>
   );
 };

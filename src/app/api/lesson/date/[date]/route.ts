@@ -20,6 +20,7 @@ export async function GET(
 
     const lessons = await prisma.lesson.findMany({
       where: { date: new Date(date) },
+      orderBy: { start: "asc" },
     });
 
     return NextResponse.json(lessons, { status: 200 });
