@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { addDays, startOfWeek, addHours } from "date-fns";
+import { addDays, startOfWeek, addHours } from "@/lib/dates";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -51,7 +51,7 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
   const weekDays = generateWeekDays();
 
   return (
-    <div className="container mx-auto p-4 bg-card">
+    <div className="container mx-auto p-4 bg-card rounded drop-shadow-md">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center space-x-2">
           <Button
@@ -102,10 +102,13 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
       </div>
       <div className="border rounded-lg overflow-hidden">
         <div className="grid grid-cols-8 bg-gray-100">
-          <div className=""></div>
+          <div className="w-20"></div>
           {view === "week" &&
             weekDays.map((day, index) => (
-              <div key={index} className="flex gap-4 py-2 font-semibold">
+              <div
+                key={index}
+                className="flex justify-start gap-4 py-2 font-semibold"
+              >
                 <div className="capitalize">
                   {new Date(day).toLocaleDateString("fr-FR", {
                     weekday: "short",
@@ -124,7 +127,7 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
             {timeSlots.map((slot, index) => (
               <div
                 key={index}
-                className="h-20 border-b text-right pr-2 text-sm text-gray-500"
+                className="h-32 border-b text-right pr-2 text-sm text-gray-500"
               >
                 {slot.time}
               </div>
@@ -139,12 +142,38 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
               ? weekDays.map((day, dayIndex) => (
                   <div key={dayIndex} className="border-l">
                     {timeSlots.map((_, slotIndex) => (
-                      <div key={slotIndex} className="h-12 border-b"></div>
+                      <div
+                        key={slotIndex}
+                        className=" h-32 border-b p-1 overflow-auto"
+                      >
+                        {lessons.map((lesson) => {
+                          if (
+                            lesson.start.split(":")[0] ===
+                            timeSlots[slotIndex].time.split(":")[0]
+                          ) {
+                            return (
+                              <div
+                                key={lesson.id}
+                                className="bg-gray-100 text-gray-800 rounded-xl p-2 border-s-4 border-sky-600"
+                              >
+                                <h4 className="font-bold">{lesson.title}</h4>
+                                <p>
+                                  {lesson.start} - {lesson.end}
+                                </p>
+                                <p>{lesson.type}</p>
+                              </div>
+                            );
+                          }
+                        })}
+                      </div>
                     ))}
                   </div>
                 ))
               : timeSlots.map((_, slotIndex) => (
-                  <div key={slotIndex} className="h-20 border-b">
+                  <div
+                    key={slotIndex}
+                    className=" h-32 border-b p-1 overflow-auto"
+                  >
                     {lessons.map((lesson) => {
                       if (
                         lesson.start.split(":")[0] ===
@@ -153,12 +182,13 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
                         return (
                           <div
                             key={lesson.id}
-                            className="bg-blue-500 text-white"
+                            className="bg-gray-100 text-gray-800 rounded-xl p-2 border-s-4 border-sky-600"
                           >
-                            <h4>{lesson.title}</h4>
+                            <h4 className="font-bold">{lesson.title}</h4>
                             <p>
                               {lesson.start} - {lesson.end}
                             </p>
+                            <p>{lesson.type}</p>
                           </div>
                         );
                       }
