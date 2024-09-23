@@ -7,4 +7,8 @@ export class LinkRepositoryImpl implements LinkRepository {
   async save(link: CreateLinkDto): Promise<Link> {
     return linkApi.save(link);
   }
+
+  async getRiderLink(riderId: string): Promise<Link[]> {
+    return linkApi.getRiderLinks(riderId);
+  }
 }

@@ -17,9 +17,6 @@ export default async function Home() {
   if (session && session.user)
     return (
       <main className="p-6">
-        <h1 className="text-4xl font-bold tracking-wide drop-shadow-md">
-          Equita-planner
-        </h1>
         {session.user.role === "rider" && <RiderHomePage session={session} />}
         {session.user.role === "teacher" && (
           <div>

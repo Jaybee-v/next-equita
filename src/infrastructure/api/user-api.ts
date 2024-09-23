@@ -19,4 +19,15 @@ export const userApi = {
     }
     throw new Error(data.error);
   },
+
+  async getUserByName(name: string): Promise<User[]> {
+    const response = await fetch(`/api/user/by-name/${name}`);
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
 };

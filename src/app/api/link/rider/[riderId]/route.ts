@@ -14,6 +14,8 @@ export async function GET(
 
     return NextResponse.json(links, { status: 200 });
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       { error: "Failed to fetch links" },
       { status: 500 }
