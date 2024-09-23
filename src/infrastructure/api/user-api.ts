@@ -20,7 +20,9 @@ export const userApi = {
     throw new Error(data.error);
   },
 
-  async getUserByName(name: string): Promise<User[]> {
+  async getUserByName(
+    name: string
+  ): Promise<User[] | { message: string; users: User[] }> {
     const response = await fetch(`/api/user/by-name/${name}`);
     const data = await response.json();
     console.log(data);
