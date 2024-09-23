@@ -7,4 +7,10 @@ export class UserRepositoryImpl implements UserRepository {
   async save(user: CreateUserDto): Promise<User> {
     return userApi.save(user);
   }
+
+  async getUserByName(
+    name: string
+  ): Promise<User[] | { message: string; users: User[] }> {
+    return userApi.getUserByName(name);
+  }
 }

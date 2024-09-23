@@ -10,6 +10,7 @@ const userSchema = z.object({
   lastname: z.string(),
   role: z.enum(["rider", "stable", "teacher"]),
   password: z.string().min(8),
+  level: z.number().optional(),
 });
 
 export async function POST(req: Request) {
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
         lastname: user.lastname,
         role: user.role,
         password: hashedPassword,
+        level: user.level,
       },
       select: {
         id: true,

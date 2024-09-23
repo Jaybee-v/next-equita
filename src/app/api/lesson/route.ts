@@ -14,6 +14,7 @@ const lessonSchema = z.object({
   // price: z.number().int().positive(),
   isPublic: z.boolean(),
   emptyPlaces: z.number(),
+  requiredLevel: z.number(),
 });
 
 export async function POST(req: Request) {
@@ -35,6 +36,7 @@ export async function POST(req: Request) {
         isPublic: lesson.isPublic,
         emptyPlaces: lesson.emptyPlaces,
         stableId: lesson.stableId,
+        requiredLevel: lesson.requiredLevel,
       },
       select: {
         id: true,

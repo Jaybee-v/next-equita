@@ -16,6 +16,14 @@ export const PublicNavbar = () => {
         <li>
           <Link href="/contact">Contact</Link>
         </li>
+        <li>
+          <Link
+            href="/lessons"
+            className="text-sky-600 font-semibold drop-shadow-[0px_2px_2px_rgba(100,149,237,1)] hover:drop-shadow-md transition-all duration-300"
+          >
+            Trouver une leçon
+          </Link>
+        </li>
       </ul>
 
       <div className="flex items-center gap-4">

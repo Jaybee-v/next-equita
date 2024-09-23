@@ -9,6 +9,7 @@ export interface Lesson {
   isPublic: boolean;
   emptyPlaces: number;
   stableId: string;
+  requiredLevel: number;
   createdAt: Date;
   updatedAt: Date;
 }

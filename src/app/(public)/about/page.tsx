@@ -8,14 +8,15 @@ export default function PublicAboutPage() {
         {/* Section principale */}
         <section className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h1 className="text-5xl font-bold text-sky-700">
-              À propos d&apos;<span>Equita-planner</span>
+            <h1 className="text-5xl font-bold drop-shadow-xl">
+              À propos d&apos;
+              <span className="text-sky-700 font-black">Equita-planner</span>
             </h1>
             <h2 className="text-xl mt-4 text-gray-700">
               Simplifiez la gestion des leçons et activités équestres grâce à
               une solution moderne et intuitive.
             </h2>
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-gray-800">
               Equita-planner combine passion, expérience équestre et technologie
               pour moderniser la gestion des centres équestres, tout en rendant
               la vie plus simple aux cavaliers.
@@ -24,17 +25,18 @@ export default function PublicAboutPage() {
         </section>
 
         {/* Mon parcours */}
-        <section className="bg-white py-12">
-          <div className="container mx-auto px-4">
-            <article className="max-w-4xl mx-auto mb-12">
-              <h2 className="text-3xl font-semibold text-center text-sky-700">
+        <section className="bg-white py-12 mx-auto rounded-t-3xl">
+          <div className="container mx-auto px-4  max-w-6xl w-full">
+            <article className=" mx-auto mb-12">
+              <h2 className="text-3xl font-bold tracking-wide drop-shadow-md text-center text-sky-700">
                 Mon parcours
               </h2>
-              <p className="mt-6 text-lg text-gray-700 text-center px-20">
+              <p className="mt-6 text-lg text-gray-700 text-center lg:px-20">
                 Je m&apos;appelle Jean-Baptiste, et après 10 ans en tant que
                 moniteur d&apos;équitation, je me suis reconverti dans le
                 développement web. Aujourd&apos;hui, je mets mes compétences au
-                service des centres équestres avec Equita-planner.
+                service des centres équestres avec <br className="lg:hidden" />{" "}
+                Equita-planner.
               </p>
             </article>
 
@@ -72,7 +74,7 @@ export default function PublicAboutPage() {
         {/* Pourquoi Equita-planner */}
         <section className="container mx-auto px-4 py-12">
           <article className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-sky-700">
+            <h2 className="text-3xl font-bold tracking-wide drop-shadow-md text-sky-700">
               Pourquoi Equita-planner ?
             </h2>
             <p className="mt-6 text-lg text-gray-700">
@@ -87,7 +89,7 @@ export default function PublicAboutPage() {
         </section>
 
         {/* Vision */}
-        <section className="bg-white  py-12">
+        <section className="bg-white rounded-t-3xl  py-12">
           <div className="container mx-auto px-4">
             <article className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-sky-700">Notre vision</h2>

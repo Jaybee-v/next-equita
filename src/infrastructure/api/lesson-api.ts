@@ -29,4 +29,16 @@ export const lessonApi = {
     }
     throw new Error(data.error);
   },
+
+  async getLessonsByDate(date: string): Promise<Lesson[]> {
+    const response = await fetch(`/api/lesson/date/${date}`);
+    const data = await response.json();
+
+    if (response.status === 200) {
+      return data;
+    }
+    console.log(data);
+
+    throw new Error(data.error);
+  },
 };

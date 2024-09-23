@@ -9,6 +9,7 @@ import {
   MousePointerClick,
   UserRoundPen,
 } from "lucide-react";
+import { RiderHomePage } from "@/components/common/pages/home/RiderHomePage";
 
 export default async function Home() {
   const session = await auth();
@@ -16,13 +17,7 @@ export default async function Home() {
   if (session && session.user)
     return (
       <main className="p-6">
-        <h1 className="text-4xl font-bold tracking-wide">Equita-planner</h1>
-        {session.user.role === "rider" && (
-          <div>
-            <p className="text-lg">Vous êtes cavalier</p>
-            <UserCard session={session} />
-          </div>
-        )}
+        {session.user.role === "rider" && <RiderHomePage session={session} />}
         {session.user.role === "teacher" && (
           <div>
             <p className="text-lg">Vous êtes moniteur</p>
@@ -35,16 +30,13 @@ export default async function Home() {
             <UserCard session={session} />
           </div>
         )}
-        <p className="text-lg">
-          Bienvenue, {session.user.name} / {session.user.role}
-        </p>
       </main>
     );
 
   return (
     <main className="flex flex-col gap-y-4 pt-24 justify-center items-center ">
       {/* Hero Section */}
-      <h1 className="max-lg:text-4xl text-7xl text-center font-bold tracking-wide cursor-default">
+      <h1 className="max-lg:text-4xl text-7xl text-center font-bold tracking-wide cursor-default drop-shadow-xl">
         Simplifiez les réservations de <br />
         <span className="font-black text-sky-700 tracking-tight">
           vos cours et activités équestres
@@ -71,7 +63,7 @@ export default async function Home() {
         </p>
         {/* Features Section */}
         <div className="p-6 mt-10 cursor-default">
-          <h3 className="text-2xl font-bold tracking-wide text-center text-sky-800">
+          <h3 className="text-2xl font-bold tracking-wide drop-shadow-md text-center text-sky-800">
             Ce que propose <span>Equita-planner</span>
           </h3>
           <section className="grid md:grid-cols-4 gap-6 py-6 mt-6">
