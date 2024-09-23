@@ -9,6 +9,7 @@ import {
   MousePointerClick,
   UserRoundPen,
 } from "lucide-react";
+import { RiderHomePage } from "@/components/common/pages/home/RiderHomePage";
 
 export default async function Home() {
   const session = await auth();
@@ -19,12 +20,7 @@ export default async function Home() {
         <h1 className="text-4xl font-bold tracking-wide drop-shadow-md">
           Equita-planner
         </h1>
-        {session.user.role === "rider" && (
-          <div>
-            <p className="text-lg">Vous êtes cavalier</p>
-            <UserCard session={session} />
-          </div>
-        )}
+        {session.user.role === "rider" && <RiderHomePage session={session} />}
         {session.user.role === "teacher" && (
           <div>
             <p className="text-lg">Vous êtes moniteur</p>
@@ -37,9 +33,6 @@ export default async function Home() {
             <UserCard session={session} />
           </div>
         )}
-        <p className="text-lg">
-          Bienvenue, {session.user.name} / {session.user.role}
-        </p>
       </main>
     );
 
