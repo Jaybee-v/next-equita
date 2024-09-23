@@ -4,8 +4,15 @@ import { User } from "@/domain/entities/User";
 import React, { useState } from "react";
 import { SearchStableOrTeacherForm } from "../forms/SearchStableOrTeacherForm";
 import { StableOrTeacherSearchCard } from "./StableOrTeacherSearchCard";
+import { Session } from "next-auth";
 
-export const SearchStableTeacherComponent = () => {
+interface SearchStableTeacherComponentProps {
+  session: Session;
+}
+
+export const SearchStableTeacherComponent = ({
+  session,
+}: SearchStableTeacherComponentProps) => {
   const [targets, setTargets] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
   return (
@@ -19,14 +26,20 @@ export const SearchStableTeacherComponent = () => {
         votre centre équestre avant de pouvoir réserver vos leçons
       </p>
       <div>
-        <SearchStableOrTeacherForm
-          setTargets={setTargets}
-          setError={setError}
-        />
+        <article className="max-w-lg mx-auto">
+          <SearchStableOrTeacherForm
+            setTargets={setTargets}
+            setError={setError}
+          />
+        </article>
         {error && <p>{error}</p>}
-        <div>
+        <div className="grid grid-cols-3 gap-2">
           {targets.map((target) => (
-            <StableOrTeacherSearchCard key={target.id} user={target} />
+            <StableOrTeacherSearchCard
+              key={target.id}
+              user={target}
+              session={session}
+            />
           ))}
         </div>
       </div>

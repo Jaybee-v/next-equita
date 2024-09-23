@@ -13,7 +13,8 @@ export const RiderHomePage = async ({ session }: RiderHomePageProps) => {
     session.user.id
   );
 
-  if (getRiderLinks.length === 0) return <SearchStableTeacherComponent />;
+  if (getRiderLinks.length === 0)
+    return <SearchStableTeacherComponent session={session} />;
 
   return (
     <div>

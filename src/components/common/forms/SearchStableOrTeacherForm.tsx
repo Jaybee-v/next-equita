@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@/domain/entities/User";
 import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
+import { Search } from "lucide-react";
 
 interface SearchStableOrTeacherFormProps {
   setTargets: (targets: User[]) => void;
@@ -48,7 +49,7 @@ export const SearchStableOrTeacherForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-6">
         <FormField
           control={form.control}
           name="name"
@@ -59,7 +60,13 @@ export const SearchStableOrTeacherForm = ({
             />
           )}
         />
-        <Button type="submit"> Rechercher</Button>
+        <article className="flex w-full justify-end">
+          <Button type="submit" className="w-fit gap-4">
+            {" "}
+            <Search />
+            Rechercher
+          </Button>
+        </article>
       </form>
     </Form>
   );
