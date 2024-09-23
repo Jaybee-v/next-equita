@@ -29,6 +29,9 @@ import { Session } from "next-auth";
 
 interface LessonFormProps {
   session: Session;
+  start?: string;
+  end?: string;
+  dateState?: Date;
 }
 
 const schema = z.object({
@@ -42,10 +45,15 @@ const schema = z.object({
   isPublic: z.boolean(),
   emptyPlaces: z.string(),
   stableId: z.string(),
-  requiredLevel: z.number(),
+  requiredLevel: z.string(),
 });
 
-export const LessonForm = ({ session }: LessonFormProps) => {
+export const LessonForm = ({
+  session,
+  start,
+  end,
+  dateState,
+}: LessonFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,14 +64,16 @@ export const LessonForm = ({ session }: LessonFormProps) => {
       title: "",
       description: "",
       type: "",
-      date: new Date().toISOString().split("T")[0],
-      start: "",
-      end: "",
+      date: dateState
+        ? new Date(dateState).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
+      start: start || "",
+      end: end || "",
       // price: 0,
       isPublic: false,
       emptyPlaces: "",
       stableId: session.user.id as string,
-      requiredLevel: 0,
+      requiredLevel: "",
     },
   });
 
@@ -81,7 +91,7 @@ export const LessonForm = ({ session }: LessonFormProps) => {
         isPublic: data.isPublic,
         emptyPlaces: parseInt(data.emptyPlaces),
         stableId: data.stableId,
-        requiredLevel: data.requiredLevel,
+        requiredLevel: parseInt(data.requiredLevel),
       });
       console.log("RESULT LESSON HERE", lesson);
       if (lesson) {

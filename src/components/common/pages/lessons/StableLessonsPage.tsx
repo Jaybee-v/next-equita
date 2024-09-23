@@ -22,13 +22,13 @@ export const StableLessonsPage = async ({
       <h1 className="text-4xl font-bold text-center tracking-wide py-2 text-sky-700">
         Gérez vos leçons en toute simplicité
       </h1>
-      <BaseCalendar lessons={lessons} />
-      <section className="bg-card p-6 rounded drop-shadow-md">
+      <BaseCalendar lessons={lessons} session={session} />
+      {/* <section className="bg-card p-6 rounded drop-shadow-md">
         <h2 className="font-semibold pb-6 text-xl text-sky-700">
           Vos prochaines leçons
         </h2>
         <LessonsTable lessons={lessons} />
-      </section>
+      </section> */}
       <div className="flex justify-between w-full">
         <section className="max-w-md w-full bg-card p-6 rounded drop-shadow-md">
           <h2 className="font-semibold text-center text-sky-700">

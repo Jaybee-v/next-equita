@@ -29,3 +29,31 @@ export function formatDate(date: Date): string {
 
   return `${year}-${month}-${day}`;
 }
+
+export function isSameDay(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+
+export function parseTime(timeString: string): Date {
+  const [hours, minutes] = timeString.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+}
+
+export function generateWeekDays(date: Date) {
+  const startDate = startOfWeek(date);
+  return Array.from({ length: 7 }, (_, i) => addDays(startDate, i));
+}
+
+export function generateTimeSlots(date: Date, start: number, end: number) {
+  const HOURS = Array.from({ length: end - start + 1 }, (_, i) => i + start);
+  return HOURS.map((hour) => ({
+    time: `${hour.toString().padStart(2, "0")}:00`,
+    date: addHours(date, hour),
+  }));
+}
