@@ -12,6 +12,7 @@ export async function GET(
     // Fetch lessons by stableId from the database
     const user = await prisma.user.findUnique({
       where: { id },
+      include: { address: true },
     });
 
     // Return a successful response with the lessons
