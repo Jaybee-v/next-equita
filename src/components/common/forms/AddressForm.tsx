@@ -8,9 +8,11 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { AddressRepositoryImpl } from "@/infrastructure/repositories/AddressRepositoryImpl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Session } from "next-auth";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -28,6 +30,8 @@ const schema = z.object({
 });
 
 export const AddressForm = ({ session, setOpen }: AddressFormProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
@@ -42,9 +46,28 @@ export const AddressForm = ({ session, setOpen }: AddressFormProps) => {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     console.log(data);
-
-    if (setOpen) {
-      setOpen(false);
+    setIsSubmitting(true);
+    try {
+      const createAddress = await new AddressRepositoryImpl().save(data);
+      console.log(createAddress);
+      toast({
+        title: "Adresse ajoutée",
+        description: "Votre adresse a bien été ajoutée",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'ajout de votre adresse",
+        variant: "destructive",
+      });
+    } finally {
+      setTimeout(() => {
+        if (setOpen) {
+          setOpen(false);
+        }
+        setIsSubmitting(false);
+      }, 3000);
     }
   };
 
@@ -100,7 +123,11 @@ export const AddressForm = ({ session, setOpen }: AddressFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          {isSubmitting
+            ? "Adresse en cours d'enregistrement"
+            : "Enregistrer l'adresse"}
+        </Button>
       </form>
     </Form>
   );

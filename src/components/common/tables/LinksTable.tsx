@@ -40,6 +40,9 @@ export const LinksTable = ({ session, links }: LinksTableProps) => {
         <article key={target.id} className="bg-card p-6 rounded-lg shadow">
           <h2>{target.name}</h2>
           <p>{target.email}</p>
+          <p className="font-semibold">
+            {target.address?.zipCode} {target.address?.city}
+          </p>
         </article>
       ))}
     </div>
