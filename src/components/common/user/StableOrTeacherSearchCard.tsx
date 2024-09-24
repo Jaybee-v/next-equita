@@ -41,6 +41,11 @@ export const StableOrTeacherSearchCard = ({
         <h3 className="font-bold text-xl">
           {user.name} {user.lastname ? <span>{user.lastname}</span> : null}
         </h3>
+        {user.address && (
+          <p className="font-semibold">
+            {user.address?.zipCode} {user.address?.city}
+          </p>
+        )}
         <Button type="button" onClick={onSubmit}>
           {user.role === "stable"
             ? "Devenir membre du centre équestre"

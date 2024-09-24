@@ -10,6 +10,7 @@ import {
   UserRoundPen,
 } from "lucide-react";
 import { RiderHomePage } from "@/components/common/pages/home/RiderHomePage";
+import { StableHomePage } from "@/components/common/pages/home/StableHomePage";
 
 export default async function Home() {
   const session = await auth();
@@ -24,12 +25,7 @@ export default async function Home() {
             <UserCard session={session} />
           </div>
         )}
-        {session.user.role === "stable" && (
-          <div>
-            <p className="text-lg">Vous êtes gestionnaire de centre équestre</p>
-            <UserCard session={session} />
-          </div>
-        )}
+        {session.user.role === "stable" && <StableHomePage session={session} />}
       </main>
     );
 

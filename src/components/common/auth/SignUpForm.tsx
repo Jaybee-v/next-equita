@@ -118,7 +118,7 @@ export const SignUpForm = () => {
         lastname: values.lastname,
         role: userType,
         level:
-          userType === "rider" && values.level ? parseInt(values.level) : null,
+          userType === "rider" && values.level ? parseInt(values.level) : 8,
       });
 
       if (user) {

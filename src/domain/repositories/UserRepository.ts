@@ -6,4 +6,5 @@ export interface UserRepository {
   getUserByName(
     name: string
   ): Promise<User[] | { message: string; users: User[] }>;
+  getUserById(id: string): Promise<User>;
 }
