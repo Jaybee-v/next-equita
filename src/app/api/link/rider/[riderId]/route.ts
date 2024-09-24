@@ -10,6 +10,7 @@ export async function GET(
   try {
     const links = await prisma.link.findMany({
       where: { riderId },
+      orderBy: { isPrimay: "desc" },
     });
 
     return NextResponse.json(links, { status: 200 });

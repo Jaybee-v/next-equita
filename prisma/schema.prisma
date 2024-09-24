@@ -44,5 +44,6 @@ model Link {
   riderId   String
   stableId  String?
   teacherId String?
+  isPrimay  Boolean  @default(false)
   createdAt DateTime @default(now())
 }
