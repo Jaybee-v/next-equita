@@ -1,8 +1,11 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/domain/entities/Link";
 import { User } from "@/domain/entities/User";
 import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
 import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
+
 import React, { useEffect, useState } from "react";
 
 interface LinksTableProps {
@@ -10,7 +13,8 @@ interface LinksTableProps {
   links: Link[];
 }
 
-export const LinksTable = ({ session, links }: LinksTableProps) => {
+export const LinksTable = ({ links }: LinksTableProps) => {
+  const router = useRouter();
   const [targets, setTargets] = useState<User[]>([]);
 
   useEffect(() => {
@@ -43,6 +47,9 @@ export const LinksTable = ({ session, links }: LinksTableProps) => {
           <p className="font-semibold">
             {target.address?.zipCode} {target.address?.city}
           </p>
+          <Button onClick={() => router.push(`/lessons?club=${target.id}`)}>
+            Voir les leçons
+          </Button>
         </article>
       ))}
     </div>
