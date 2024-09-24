@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { StableAccountPage } from "@/components/common/pages/account/StableAccountPage";
 import { redirect } from "next/navigation";
 import React from "react";
 
