@@ -18,6 +18,10 @@ export class UserRepositoryImpl implements UserRepository {
     return userApi.getUserById(id);
   }
 
+  async getUserPassword(id: string): Promise<string> {
+    return userApi.getUserPassword(id);
+  }
+
   async updateAccount(
     id: string,
     updatedUser: {
@@ -27,5 +31,13 @@ export class UserRepositoryImpl implements UserRepository {
     }
   ): Promise<User> {
     return userApi.updateAccount(id, updatedUser);
+  }
+
+  async updatePassword(
+    id: string,
+    actualPassword: string,
+    newPassword: string
+  ): Promise<User> {
+    return userApi.updatePassword(id, actualPassword, newPassword);
   }
 }

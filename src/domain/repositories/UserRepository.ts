@@ -11,4 +11,10 @@ export interface UserRepository {
     id: string,
     updatedUser: { name: string; lastname?: string; email: string }
   ): Promise<User>;
+  updatePassword(
+    id: string,
+    actualPassword: string,
+    newPassword: string
+  ): Promise<User>;
+  getUserPassword(id: string): Promise<string>;
 }
