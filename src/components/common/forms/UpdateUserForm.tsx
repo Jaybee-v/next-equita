@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { User } from "@/domain/entities/User";
+import { UpdateUserAccount } from "@/domain/use-cases/UpdateUserAccount.usecase";
+import { useToast } from "@/hooks/use-toast";
+import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Session } from "next-auth";
 import React from "react";
@@ -27,6 +30,7 @@ interface UpdateUserFormProps {
 }
 
 export const UpdateUserForm = ({ session, user }: UpdateUserFormProps) => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
@@ -39,6 +43,28 @@ export const UpdateUserForm = ({ session, user }: UpdateUserFormProps) => {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     console.log(data);
+    if (data.name === user.name && data.email === user.email) return;
+    try {
+      const userRepository = new UserRepositoryImpl();
+      const updateUserAccountUseCase = new UpdateUserAccount(
+        userRepository
+      ).execute(session.user.id, data);
+
+      console.log(updateUserAccountUseCase);
+      toast({
+        title: "Compte mis à jour",
+        description: "Votre compte a été mis à jour avec succès",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Erreur",
+        description:
+          "Une erreur s'est produite lors de la mise à jour du compte",
+        variant: "destructive",
+      });
+    } finally {
+    }
   };
 
   return (

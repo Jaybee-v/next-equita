@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CreateUserUseCase } from "@/domain/use-cases/CreateUser.usecase";
 
 interface UserTypeSelectorProps {
   title: string;
@@ -111,7 +112,9 @@ export const SignUpForm = () => {
   const onSubmit = async (values: z.infer<typeof schema>) => {
     setIsSubmitting(true);
     try {
-      const user = await new UserRepositoryImpl().save({
+      const userRepository = new UserRepositoryImpl();
+      const createUserUseCase = new CreateUserUseCase(userRepository);
+      const user = await createUserUseCase.execute({
         email: values.email,
         password: values.password,
         name: values.name,

@@ -17,4 +17,15 @@ export class UserRepositoryImpl implements UserRepository {
   async getUserById(id: string): Promise<User> {
     return userApi.getUserById(id);
   }
+
+  async updateAccount(
+    id: string,
+    updatedUser: {
+      name: string;
+      lastname?: string;
+      email: string;
+    }
+  ): Promise<User> {
+    return userApi.updateAccount(id, updatedUser);
+  }
 }

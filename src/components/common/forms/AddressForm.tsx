@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Address } from "@/domain/entities/Address";
+import { CreateAddressUseCase } from "@/domain/use-cases/CreateAddress.usecase";
 import { useToast } from "@/hooks/use-toast";
 import { AddressRepositoryImpl } from "@/infrastructure/repositories/AddressRepositoryImpl";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,7 +55,9 @@ export const AddressForm = ({
     console.log(data);
     setIsSubmitting(true);
     try {
-      const createAddress = await new AddressRepositoryImpl().save(data);
+      const addressRepository = new AddressRepositoryImpl();
+      const createAddressUseCase = new CreateAddressUseCase(addressRepository);
+      const createAddress = createAddressUseCase.execute(data);
       console.log(createAddress);
       toast({
         title: "Adresse ajoutée",

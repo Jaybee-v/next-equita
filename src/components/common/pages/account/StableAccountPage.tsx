@@ -27,14 +27,14 @@ export const StableAccountPage = ({ session }: StableAccoutPageProps) => {
     <main className="max-w-6xl mx-auto py-6">
       <h1>Stable Account</h1>
       <p>Hi, {user.name}!</p>
-      <div className="grid grid-cols-2 bg-card p-6 rounded drop-shadow-md">
-        <section className="max-w-lg">
+      <div className="grid lg:grid-cols-2 max-lg:gap-4 rounded drop-shadow-md">
+        <section className="max-w-lg bg-card  p-6">
           <h2 className="font-semibold text-lg tracking-wide">
             Modifier mes données personnelles
           </h2>
           <UpdateUserForm session={session} user={user} />
         </section>
-        <section>
+        <section className="bg-card  p-6">
           <h2 className="font-semibold text-lg tracking-wide">
             Modifier mon adresse
           </h2>

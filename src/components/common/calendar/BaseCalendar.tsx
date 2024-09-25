@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   addDays,
   isSameDay,
@@ -34,6 +34,10 @@ const HOURS = Array.from(
 export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"day" | "week">("week");
+
+  useEffect(() => {
+    if (window.innerWidth < 640) setView("day");
+  }, []);
 
   const navigateDate = (direction: "prev" | "next") => {
     const days = view === "day" ? 1 : 7;
@@ -125,7 +129,7 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
 
   return (
     <div className="container mx-auto p-4 bg-card rounded drop-shadow-md">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between max-lg:flex-col max-lg:gap-2 lg:items-center mb-4">
         <div className="flex items-center space-x-2">
           <Button
             onClick={() => navigateDate("prev")}
@@ -141,7 +145,7 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <h2 className="text-xl font-semibold capitalize">
+          <h2 className="lg:text-xl font-semibold capitalize">
             {view === "day"
               ? new Date(currentDate).toLocaleDateString("fr-FR", {
                   weekday: "long",
@@ -160,18 +164,20 @@ export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
                 })}`}
           </h2>
         </div>
-        <Select
-          value={view}
-          onValueChange={(value: "day" | "week") => setView(value)}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="day">Jour</SelectItem>
-            <SelectItem value="week">Semaine</SelectItem>
-          </SelectContent>
-        </Select>
+        <article className="hidden lg:block">
+          <Select
+            value={view}
+            onValueChange={(value: "day" | "week") => setView(value)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select view" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="day">Jour</SelectItem>
+              <SelectItem value="week">Semaine</SelectItem>
+            </SelectContent>
+          </Select>
+        </article>
       </div>
 
       <div className="border rounded-lg overflow-hidden">
