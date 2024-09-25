@@ -7,4 +7,8 @@ export class AddressRepositoryImpl implements AddressRepository {
   async save(address: CreateAddressDto): Promise<Address> {
     return addressApi.save(address);
   }
+
+  async update(id: string, address: CreateAddressDto): Promise<Address> {
+    return addressApi.update(id, address);
+  }
 }
