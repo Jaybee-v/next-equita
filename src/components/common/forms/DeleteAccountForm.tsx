@@ -25,6 +25,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  FileWarning,
+  MessageCircleWarningIcon,
+  MessageSquareWarning,
+} from "lucide-react";
 
 interface DeleteAccountFormProps {
   session: Session;
@@ -50,7 +56,17 @@ export const DeleteAccountForm = ({ session }: DeleteAccountFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 pt-4">
+        <Alert variant={"destructive"}>
+          <MessageSquareWarning className="h-4 w-4" />
+          <AlertTitle>
+            Attention! Vous êtes sur le point de supprimer votre compte.
+          </AlertTitle>
+          <AlertDescription>
+            Cette action est irréversible. Veuillez confirmer votre mot de passe
+            pour supprimer votre compte.
+          </AlertDescription>
+        </Alert>
         <FormField
           name="password"
           control={form.control}
@@ -74,15 +90,13 @@ export const DeleteAccountForm = ({ session }: DeleteAccountFormProps) => {
           )}
         />
         <AlertDialog>
-          <AlertDialogTrigger>
-            <Button
-              type="button"
-              variant="destructive"
-              className="w-full"
-              disabled={password.length < 8}
-            >
-              Supprimer mon compte
-            </Button>
+          <AlertDialogTrigger
+            className={`w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 h-9 px-4 py-2 ${
+              password.length < 8 ? "cursor-not-allowed" : ""
+            } `}
+            disabled={password.length < 8}
+          >
+            Supprimer mon compte
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
