@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Address } from "@/domain/entities/Address";
 import { CreateAddressUseCase } from "@/domain/use-cases/CreateAddress.usecase";
+import { UpdateAddressUseCase } from "@/domain/use-cases/UpdateAddress.usecase";
 import { useToast } from "@/hooks/use-toast";
 import { AddressRepositoryImpl } from "@/infrastructure/repositories/AddressRepositoryImpl";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -55,14 +56,30 @@ export const AddressForm = ({
     console.log(data);
     setIsSubmitting(true);
     try {
-      const addressRepository = new AddressRepositoryImpl();
-      const createAddressUseCase = new CreateAddressUseCase(addressRepository);
-      const createAddress = createAddressUseCase.execute(data);
-      console.log(createAddress);
-      toast({
-        title: "Adresse ajoutée",
-        description: "Votre adresse a bien été ajoutée",
-      });
+      if (!address) {
+        const addressRepository = new AddressRepositoryImpl();
+        const createAddressUseCase = new CreateAddressUseCase(
+          addressRepository
+        );
+        const createAddress = createAddressUseCase.execute(data);
+        console.log(createAddress);
+        toast({
+          title: "Adresse ajoutée",
+          description: "Votre adresse a bien été ajoutée",
+        });
+      }
+      if (address) {
+        const addressRepository = new AddressRepositoryImpl();
+        const updateAddressUseCase = new UpdateAddressUseCase(
+          addressRepository
+        );
+        const updateAddress = updateAddressUseCase.execute(address.id, data);
+        console.log(updateAddress);
+        toast({
+          title: "Adresse modifiée",
+          description: "Votre adresse a bien été modifiée",
+        });
+      }
     } catch (error) {
       console.error(error);
       toast({

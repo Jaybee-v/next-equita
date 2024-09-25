@@ -17,4 +17,20 @@ export const addressApi = {
     }
     throw new Error(data.error);
   },
+
+  async update(id: string, address: CreateAddressDto): Promise<Address> {
+    const updatedAddress = await fetch(`/api/address/update/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(address),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await updatedAddress.json();
+
+    if (updatedAddress.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
 };
