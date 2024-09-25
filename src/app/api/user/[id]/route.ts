@@ -25,3 +25,25 @@ export async function GET(
     );
   }
 }
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  const { name, lastname, email } = await req.json();
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: { name, lastname, email },
+    });
+
+    return NextResponse.json(updatedUser, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to update user" },
+      { status: 500 }
+    );
+  }
+}

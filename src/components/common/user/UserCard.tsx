@@ -1,5 +1,6 @@
 import AuthButton from "@/app/AuthButton.server";
 import { LinkSecondary } from "@/components/ui/LinkSecondary";
+
 import { Session } from "next-auth";
 import React from "react";
 
@@ -9,7 +10,7 @@ interface UserCardProps {
 
 export const UserCard = ({ session }: UserCardProps) => {
   return (
-    <article className="shadow p-6 rounded max-w-md bg-card h-fit w-full">
+    <article className="lg:shadow p-6 lg:rounded max-w-md bg-card h-fit w-full">
       {new Date(session.user.createdAt) >
         new Date(Date.now() - 24 * 60 * 60 * 1000) && (
         <p>

@@ -8,6 +8,8 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Address } from "@/domain/entities/Address";
+import { CreateAddressUseCase } from "@/domain/use-cases/CreateAddress.usecase";
 import { useToast } from "@/hooks/use-toast";
 import { AddressRepositoryImpl } from "@/infrastructure/repositories/AddressRepositoryImpl";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +21,7 @@ import * as z from "zod";
 interface AddressFormProps {
   session: Session;
   setOpen?: (open: boolean) => void;
+  address?: Address;
 }
 
 const schema = z.object({
@@ -29,17 +32,21 @@ const schema = z.object({
   userId: z.string(),
 });
 
-export const AddressForm = ({ session, setOpen }: AddressFormProps) => {
+export const AddressForm = ({
+  session,
+  setOpen,
+  address,
+}: AddressFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
     defaultValues: {
-      street: "",
-      city: "",
-      zipCode: "",
-      country: "FRANCE",
+      street: address?.street || "",
+      city: address?.city || "",
+      zipCode: address?.zipCode || "",
+      country: address?.country || "FRANCE",
       userId: session.user.id,
     },
   });
@@ -48,7 +55,9 @@ export const AddressForm = ({ session, setOpen }: AddressFormProps) => {
     console.log(data);
     setIsSubmitting(true);
     try {
-      const createAddress = await new AddressRepositoryImpl().save(data);
+      const addressRepository = new AddressRepositoryImpl();
+      const createAddressUseCase = new CreateAddressUseCase(addressRepository);
+      const createAddress = createAddressUseCase.execute(data);
       console.log(createAddress);
       toast({
         title: "Adresse ajoutée",
@@ -73,7 +82,7 @@ export const AddressForm = ({ session, setOpen }: AddressFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
         <FormField
           name="street"
           control={form.control}

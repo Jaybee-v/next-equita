@@ -11,7 +11,6 @@ export const StableHomePage = async ({ session }: StableHomePageProps) => {
   return (
     <div>
       <StableCheckAddress session={session} />
-      <p className="text-lg">Vous êtes gestionnaire de centre équestre</p>
       <UserCard session={session} />
     </div>
   );

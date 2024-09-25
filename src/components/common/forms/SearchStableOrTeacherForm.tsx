@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@/domain/entities/User";
 import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
 import { Search } from "lucide-react";
+import { GetUserByNameUseCase } from "@/domain/use-cases/GetUserByName.usecase";
 
 interface SearchStableOrTeacherFormProps {
   setTargets: (targets: User[]) => void;
@@ -33,8 +34,10 @@ export const SearchStableOrTeacherForm = ({
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     console.log(data);
+    const userRepository = new UserRepositoryImpl();
+    const getUserByNameUseCase = new GetUserByNameUseCase(userRepository);
     const search: User[] | { message: string; users: User[] } =
-      await new UserRepositoryImpl().getUserByName(data.name);
+      await getUserByNameUseCase.execute(data.name);
     console.log(search);
     if ("message" in search) {
       setError(search.message);

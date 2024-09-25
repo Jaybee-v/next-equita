@@ -43,4 +43,24 @@ export const userApi = {
     }
     throw new Error(data.error);
   },
+
+  async updateAccount(
+    id: string,
+    updatedUser: { name: string; lastname?: string; email: string }
+  ): Promise<User> {
+    const response = await fetch(`/api/user/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(updatedUser),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
 };

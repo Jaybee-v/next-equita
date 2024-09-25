@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { Session } from "next-auth";
+import { CreateLessonUseCase } from "@/domain/use-cases/CreateLesson.usecase";
 
 interface LessonFormProps {
   session: Session;
@@ -81,7 +82,11 @@ export const LessonForm = ({
     setIsSubmitting(true);
     try {
       console.log(data);
-      const lesson = await new LessonRepositoryImpl().save({
+
+      const lessontReporitory = new LessonRepositoryImpl();
+      const createLessonUseCase = new CreateLessonUseCase(lessontReporitory);
+
+      const lesson = await createLessonUseCase.execute({
         title: data.title,
         description: data.description || "",
         type: data.type,
@@ -97,7 +102,7 @@ export const LessonForm = ({
       if (lesson) {
         toast({
           title: "Leçon créée",
-          description: `La leçon ${lesson.title} a bien été créée.`,
+          description: `La leçon ${data.title} a bien été créée.`,
         });
         form.reset();
       }
