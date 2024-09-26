@@ -115,7 +115,10 @@ export const DeleteAccountForm = ({ session }: DeleteAccountFormProps) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Annuler</AlertDialogCancel>
-              <AlertDialogAction onClick={form.handleSubmit(onSubmit)}>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90"
+                onClick={form.handleSubmit(onSubmit)}
+              >
                 Supprimer mon compte
               </AlertDialogAction>
             </AlertDialogFooter>
