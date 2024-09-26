@@ -12,4 +12,8 @@ export class AddressRepositoryImpl implements AddressRepository {
   async update(id: string, address: UpdateAddressDto): Promise<Address> {
     return addressApi.update(id, address);
   }
+
+  async deleteAddress(id: string): Promise<void> {
+    return addressApi.deleteAddress(id);
+  }
 }

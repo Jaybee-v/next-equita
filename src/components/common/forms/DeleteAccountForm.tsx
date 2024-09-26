@@ -24,13 +24,8 @@ import { Session } from "next-auth";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import {
-  FileWarning,
-  MessageCircleWarningIcon,
-  MessageSquareWarning,
-} from "lucide-react";
+import { MessageSquareWarning } from "lucide-react";
 
 interface DeleteAccountFormProps {
   session: Session;
@@ -57,14 +52,16 @@ export const DeleteAccountForm = ({ session }: DeleteAccountFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 pt-4">
-        <Alert variant={"destructive"}>
+        <Alert variant={"destructive"} className="bg-red-50">
           <MessageSquareWarning className="h-4 w-4" />
-          <AlertTitle>
+          <AlertTitle className="font-bold">
             Attention! Vous êtes sur le point de supprimer votre compte.
           </AlertTitle>
           <AlertDescription>
-            Cette action est irréversible. Veuillez confirmer votre mot de passe
-            pour supprimer votre compte.
+            Cette action est irréversible. <br />
+            Toutes vos données seront supprimées.
+            <br />
+            Veuillez confirmer votre mot de passe pour supprimer votre compte.
           </AlertDescription>
         </Alert>
         <FormField

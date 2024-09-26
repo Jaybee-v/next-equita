@@ -40,4 +40,8 @@ export class UserRepositoryImpl implements UserRepository {
   ): Promise<User> {
     return userApi.updatePassword(id, actualPassword, newPassword);
   }
+
+  async deleteAccount(id: string, password: string): Promise<void> {
+    return userApi.deleteAccount(id, password);
+  }
 }

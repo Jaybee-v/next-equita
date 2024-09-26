@@ -5,6 +5,12 @@ import { UserRepositoryImpl } from "../repositories/UserRepositoryImpl";
 import { GetUserPasswordUseCase } from "@/domain/use-cases/GetUserPassword.usecase";
 import { comparePassword } from "@/lib/bcrypt";
 import { signIn } from "next-auth/react";
+import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
+import { AddressRepositoryImpl } from "../repositories/AddressRepositoryImpl";
+import { DeleteAddressUseCase } from "@/domain/use-cases/DeleteAddress.usecase";
+import { LessonRepositoryImpl } from "../repositories/LessonRepositoryImpl";
+import { GetLessonByStableIdUseCase } from "@/domain/use-cases/GetLessonByStableId.usecase";
+import { DeleteLessonUseCase } from "@/domain/use-cases/DeleteLesson.usecase";
 
 export const userApi = {
   async save(user: CreateUserDto): Promise<User> {
@@ -85,8 +91,8 @@ export const userApi = {
     newPassword: string
   ): Promise<User> {
     const userRepository = new UserRepositoryImpl();
-    const getUserByIdUseCase = new GetUserPasswordUseCase(userRepository);
-    const password = await getUserByIdUseCase.execute(id);
+    const getUserPasswordUseCase = new GetUserPasswordUseCase(userRepository);
+    const password = await getUserPasswordUseCase.execute(id);
 
     const comparedPasswords = await comparePassword(actualPassword, password);
 
@@ -111,6 +117,47 @@ export const userApi = {
         redirect: false,
       });
       return data;
+    }
+    throw new Error(data.error);
+  },
+
+  async deleteAccount(id: string, password: string): Promise<void> {
+    const userRepository = new UserRepositoryImpl();
+    const getUserPasswordUseCase = new GetUserPasswordUseCase(userRepository);
+    const getPassword = await getUserPasswordUseCase.execute(id);
+
+    const comparedPasswords = await comparePassword(password, getPassword);
+
+    if (!comparedPasswords) {
+      throw new Error("Invalid password");
+    }
+    const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
+    const user = await getUserByIdUseCase.execute(id);
+
+    if (user.role === "stable") {
+      const addressRepository = new AddressRepositoryImpl();
+      const deleteAddressUseCase = new DeleteAddressUseCase(addressRepository);
+      await deleteAddressUseCase.execute(user.address!.id);
+
+      const lessonRepository = new LessonRepositoryImpl();
+      const getLessonByStableIdUseCase = new GetLessonByStableIdUseCase(
+        lessonRepository
+      );
+      const lessons = await getLessonByStableIdUseCase.execute(user.id);
+      const deleteLessonUseCase = new DeleteLessonUseCase(lessonRepository);
+      for (const lesson of lessons) {
+        await deleteLessonUseCase.execute(lesson.id);
+      }
+    }
+
+    const response = await fetch(`/api/user/${id}`, {
+      method: "DELETE",
+    });
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status === 200) {
+      return;
     }
     throw new Error(data.error);
   },
