@@ -1,3 +1,4 @@
+import { DialogForgetPassword } from "@/components/common/auth/DialogForgetPassword";
 import { SignInForm } from "@/components/common/auth/SignInForm";
 import { Footer } from "@/components/ui/Footer";
 import { LinkSecondary } from "@/components/ui/LinkSecondary";
@@ -21,6 +22,7 @@ export default function SignInPage() {
           </h2>
           <SignInForm />
           <section className="pt-4 flex flex-col justify-center items-center w-full gap-4">
+            <DialogForgetPassword />
             <LinkSecondary label="Créer un compte" href="/signup" />
             <RouterButton type="default" label="Retour à l'accueil" href="/" />
           </section>

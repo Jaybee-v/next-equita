@@ -3,6 +3,7 @@ import { User } from "../entities/User";
 
 export interface UserRepository {
   save(user: CreateUserDto): Promise<User>;
+  getUserByEmail(email: string): Promise<User>;
   getUserByName(
     name: string
   ): Promise<User[] | { message: string; users: User[] }>;
@@ -17,4 +18,5 @@ export interface UserRepository {
     newPassword: string
   ): Promise<User>;
   getUserPassword(id: string): Promise<string>;
+  deleteAccount(id: string, password: string): Promise<void>;
 }

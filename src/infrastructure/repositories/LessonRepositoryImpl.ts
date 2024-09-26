@@ -30,4 +30,8 @@ export class LessonRepositoryImpl implements LessonRepository {
 
     return lessons;
   }
+
+  async deleteLesson(id: string): Promise<void> {
+    return lessonApi.deleteLesson(id);
+  }
 }

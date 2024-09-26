@@ -11,4 +11,12 @@ export class LinkRepositoryImpl implements LinkRepository {
   async getRiderLink(riderId: string): Promise<Link[]> {
     return linkApi.getRiderLinks(riderId);
   }
+
+  async getStableLinks(stableId: string): Promise<Link[]> {
+    return linkApi.getStableLinks(stableId);
+  }
+
+  async deleteLink(id: number): Promise<void> {
+    return linkApi.deleteLink(id);
+  }
 }

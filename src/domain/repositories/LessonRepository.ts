@@ -6,4 +6,5 @@ export interface LessonRepository {
   getLessonByStableId(stableId: string): Promise<Lesson[]>;
   getLessonsByDate(date: string): Promise<Lesson[]>;
   getLessonsForRider(riderId: string): Promise<Lesson[]>;
+  deleteLesson(id: string): Promise<void>;
 }

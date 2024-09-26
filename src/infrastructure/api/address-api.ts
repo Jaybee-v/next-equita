@@ -33,4 +33,16 @@ export const addressApi = {
     }
     throw new Error(data.error);
   },
+
+  async deleteAddress(id: string): Promise<void> {
+    const deletedAddress = await fetch(`/api/address/delete/${id}`, {
+      method: "DELETE",
+    });
+    const data = await deletedAddress.json();
+
+    if (deletedAddress.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
 };

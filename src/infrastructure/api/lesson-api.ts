@@ -41,4 +41,16 @@ export const lessonApi = {
 
     throw new Error(data.error);
   },
+
+  async deleteLesson(id: string): Promise<void> {
+    const deletedLesson = await fetch(`/api/lesson/delete/${id}`, {
+      method: "DELETE",
+    });
+    const data = await deletedLesson.json();
+
+    if (deletedLesson.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
 };

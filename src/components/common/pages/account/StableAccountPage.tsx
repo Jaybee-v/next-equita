@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { UpdateUserForm } from "../../forms/UpdateUserForm";
 import { AddressForm } from "../../forms/AddressForm";
 import { UpdatePasswordForm } from "../../forms/UpdatePasswordForm";
+import { DeleteAccountForm } from "../../forms/DeleteAccountForm";
 
 interface StableAccoutPageProps {
   session: Session;
@@ -43,11 +44,19 @@ export const StableAccountPage = ({ session }: StableAccoutPageProps) => {
             <UpdatePasswordForm session={session} />
           </section>
         </section>
-        <section className="bg-card  p-6 h-fit">
-          <h2 className="font-semibold text-lg tracking-wide">
-            Modifier mon adresse
-          </h2>
-          <AddressForm session={session} address={user.address} />
+        <section className="grid gap-4">
+          <section className="bg-card  p-6 h-fit">
+            <h2 className="font-semibold text-lg tracking-wide">
+              Modifier mon adresse
+            </h2>
+            <AddressForm session={session} address={user.address} />
+          </section>
+          <section className="bg-card  p-6 h-fit">
+            <h2 className="font-semibold text-lg tracking-wide">
+              Supprimer mon compte
+            </h2>
+            <DeleteAccountForm session={session} />
+          </section>
         </section>
       </div>
     </main>

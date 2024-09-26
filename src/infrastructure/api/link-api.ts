@@ -29,4 +29,26 @@ export const linkApi = {
 
     throw new Error("Failed to fetch links");
   },
+
+  async getStableLinks(id: string): Promise<Link[]> {
+    const links = await fetch(`/api/link/stable/${id}`);
+
+    if (links.status === 200) {
+      return links.json();
+    }
+
+    throw new Error("Failed to fetch links");
+  },
+
+  async deleteLink(id: number): Promise<void> {
+    const deletedLink = await fetch(`/api/link/delete/${id}`, {
+      method: "DELETE",
+    });
+
+    if (deletedLink.status === 200) {
+      return;
+    }
+
+    throw new Error("Failed to delete link");
+  },
 };

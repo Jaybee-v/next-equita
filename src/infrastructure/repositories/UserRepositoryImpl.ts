@@ -8,6 +8,10 @@ export class UserRepositoryImpl implements UserRepository {
     return userApi.save(user);
   }
 
+  async getUserByEmail(email: string): Promise<User> {
+    return userApi.getUserByEmail(email);
+  }
+
   async getUserByName(
     name: string
   ): Promise<User[] | { message: string; users: User[] }> {
@@ -39,5 +43,9 @@ export class UserRepositoryImpl implements UserRepository {
     newPassword: string
   ): Promise<User> {
     return userApi.updatePassword(id, actualPassword, newPassword);
+  }
+
+  async deleteAccount(id: string, password: string): Promise<void> {
+    return userApi.deleteAccount(id, password);
   }
 }
