@@ -4,13 +4,17 @@ import { User } from "@/domain/entities/User";
 import { UserRepositoryImpl } from "../repositories/UserRepositoryImpl";
 import { GetUserPasswordUseCase } from "@/domain/use-cases/GetUserPassword.usecase";
 import { comparePassword } from "@/lib/bcrypt";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
 import { AddressRepositoryImpl } from "../repositories/AddressRepositoryImpl";
 import { DeleteAddressUseCase } from "@/domain/use-cases/DeleteAddress.usecase";
 import { LessonRepositoryImpl } from "../repositories/LessonRepositoryImpl";
 import { GetLessonByStableIdUseCase } from "@/domain/use-cases/GetLessonByStableId.usecase";
 import { DeleteLessonUseCase } from "@/domain/use-cases/DeleteLesson.usecase";
+import { LinkRepositoryImpl } from "../repositories/LinkRepositoryImpl";
+import { GetStableLinksUseCase } from "@/domain/use-cases/GetStableLinks.usecase";
+import { DeleteLinkUseCase } from "@/domain/use-cases/DeleteLink.usecase";
+import { GetRiderLinksUseCase } from "@/domain/use-cases/GetRiderLinks.usecase";
 
 export const userApi = {
   async save(user: CreateUserDto): Promise<User> {
@@ -135,28 +139,58 @@ export const userApi = {
     const user = await getUserByIdUseCase.execute(id);
 
     if (user.role === "stable") {
+      console.log("On entre dans le role stable");
+
+      // delete address
       const addressRepository = new AddressRepositoryImpl();
       const deleteAddressUseCase = new DeleteAddressUseCase(addressRepository);
       await deleteAddressUseCase.execute(user.address!.id);
+      console.log("On a delete les adresses");
 
+      // delete stable lessons
       const lessonRepository = new LessonRepositoryImpl();
       const getLessonByStableIdUseCase = new GetLessonByStableIdUseCase(
         lessonRepository
       );
       const lessons = await getLessonByStableIdUseCase.execute(user.id);
-      const deleteLessonUseCase = new DeleteLessonUseCase(lessonRepository);
       for (const lesson of lessons) {
+        const deleteLessonUseCase = new DeleteLessonUseCase(lessonRepository);
         await deleteLessonUseCase.execute(lesson.id);
+      }
+      console.log("On a delete les leçons");
+
+      // delete stable links
+      const linkRepository = new LinkRepositoryImpl();
+      const getStableLinksUseCase = new GetStableLinksUseCase(linkRepository);
+      const links = await getStableLinksUseCase.execute(user.id);
+      for (const link of links) {
+        const deleteLinkUseCase = new DeleteLinkUseCase(linkRepository);
+        await deleteLinkUseCase.execute(link.id);
+      }
+      console.log("On a delete les links");
+    }
+
+    if (user.role === "rider") {
+      // delete rider links
+      const linkRepository = new LinkRepositoryImpl();
+      const getRiderLinksUseCase = new GetRiderLinksUseCase(linkRepository);
+      const links = await getRiderLinksUseCase.execute(user.id);
+      for (const link of links) {
+        const deleteLinkUseCase = new DeleteLinkUseCase(linkRepository);
+        await deleteLinkUseCase.execute(link.id);
       }
     }
 
-    const response = await fetch(`/api/user/${id}`, {
+    const response = await fetch(`/api/user/${user.id}`, {
       method: "DELETE",
     });
     const data = await response.json();
     console.log(data);
 
     if (response.status === 200) {
+      console.log("On a delete le user");
+
+      await signOut();
       return;
     }
     throw new Error(data.error);
