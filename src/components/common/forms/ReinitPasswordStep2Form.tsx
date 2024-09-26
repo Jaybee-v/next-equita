@@ -14,6 +14,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
+import { ReinitPasswordUseCase } from "@/domain/use-cases/ReinitPassword.usecase";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 interface ReinitPasswordStep2FormProps {
   userId: string;
@@ -37,14 +41,40 @@ const schema = z
 export const ReinitPasswordStep2Form = ({
   userId,
 }: ReinitPasswordStep2FormProps) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
     defaultValues: { password: "", confirmPassword: "" },
   });
+
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    try {
+      console.log(data);
+      const userRepository = new UserRepositoryImpl();
+      const reinitPasswordUseCase = new ReinitPasswordUseCase(userRepository);
+      await reinitPasswordUseCase.execute(userId, data.password);
+      toast({
+        title: "Mot de passe réinitialisé avec succès",
+        description:
+          "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe",
+      });
+    } catch (error) {
+      toast({
+        title: "Une erreur est survenue",
+        description: "Veuillez réessayer plus tard",
+        variant: "destructive",
+      });
+    } finally {
+      form.reset();
+      router.push("/signin");
+    }
+  };
+
   return (
     <Form {...form}>
-      <form className="grid gap-4">
+      <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="password"

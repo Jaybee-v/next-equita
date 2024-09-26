@@ -14,6 +14,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { ReinitPasswordStep2Form } from "./ReinitPasswordStep2Form";
+import { ReinitPasswordRepositoryImpl } from "@/infrastructure/repositories/ReinitPasswordRepositoryImpl";
+import { GetReinitPasswordByIdUseCase } from "@/domain/use-cases/GetReinitPasswordById.usecase";
 
 const schema = z.object({
   token: z.string(),
@@ -30,8 +32,16 @@ export const ReinitPasswordForm = () => {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     console.log(data);
-    setStep(1);
-    setUserId(null);
+    const reinitPasswordRepository = new ReinitPasswordRepositoryImpl();
+    const getReinitPasswordUseCase = new GetReinitPasswordByIdUseCase(
+      reinitPasswordRepository
+    );
+    const reinitPassword = await getReinitPasswordUseCase.execute(data.token);
+    console.log(reinitPassword);
+    if (reinitPassword) {
+      setUserId(reinitPassword.id);
+      setStep(1);
+    }
   };
   return (
     <Form {...form}>
