@@ -17,6 +17,7 @@ export interface UserRepository {
     actualPassword: string,
     newPassword: string
   ): Promise<User>;
+  reinitPassword(id: string, password: string): Promise<User>;
   getUserPassword(id: string): Promise<string>;
   deleteAccount(id: string, password: string): Promise<void>;
 }

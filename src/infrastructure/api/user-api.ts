@@ -136,6 +136,22 @@ export const userApi = {
     throw new Error(data.error);
   },
 
+  async reinitPassword(id: string, password: string): Promise<User> {
+    const result = await fetch(`/api/password/reinit/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await result.json();
+    console.log(data);
+    if (result.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
+
   async deleteAccount(id: string, password: string): Promise<void> {
     const userRepository = new UserRepositoryImpl();
     const getUserPasswordUseCase = new GetUserPasswordUseCase(userRepository);
