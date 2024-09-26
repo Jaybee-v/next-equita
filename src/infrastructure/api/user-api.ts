@@ -34,6 +34,17 @@ export const userApi = {
     throw new Error(data.error);
   },
 
+  async getUserByEmail(email: string): Promise<User> {
+    const response = await fetch(`/api/user/by-email/${email}`);
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
+
   async getUserByName(
     name: string
   ): Promise<User[] | { message: string; users: User[] }> {

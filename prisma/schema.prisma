@@ -63,3 +63,10 @@ model Link {
   isPrimay  Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+model ReinitPassword {
+  id              String   @id @default(uuid())
+  userId          String
+  createdAt       DateTime @default(now())
+  maxValidityDate DateTime
+}
