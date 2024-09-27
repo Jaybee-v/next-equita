@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "@/domain/entities/Link";
 import { User } from "@/domain/entities/User";
+import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
 import { UserRepositoryImpl } from "@/infrastructure/repositories/UserRepositoryImpl";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
@@ -22,15 +23,17 @@ export const LinksTable = ({ links }: LinksTableProps) => {
       const stablesAndTeachers: User[] = [];
       for (const link of links) {
         if (link.stableId) {
-          const data = await new UserRepositoryImpl().getUserById(
-            link.stableId
-          );
+          const userRepository = new UserRepositoryImpl();
+          const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
+          const data = await getUserByIdUseCase.execute(link.stableId);
+
           stablesAndTeachers.push(data);
         }
         if (link.teacherId) {
-          const data = await new UserRepositoryImpl().getUserById(
-            link.teacherId
-          );
+          const userRepository = new UserRepositoryImpl();
+          const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
+          const data = await getUserByIdUseCase.execute(link.teacherId);
+
           stablesAndTeachers.push(data);
         }
       }

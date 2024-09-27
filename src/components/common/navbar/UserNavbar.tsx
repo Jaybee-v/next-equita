@@ -2,6 +2,7 @@ import { Session } from "next-auth";
 import Link from "next/link";
 import React from "react";
 import { RiderNavbar } from "./RiderNavbar";
+import { StableNavbar } from "./StableNavbar";
 
 interface UserNavbarProps {
   session: Session;
@@ -9,6 +10,8 @@ interface UserNavbarProps {
 
 export const UserNavbar = ({ session }: UserNavbarProps) => {
   if (session.user.role === "rider") return <RiderNavbar session={session} />;
+
+  if (session.user.role === "stable") return <StableNavbar session={session} />;
 
   return (
     <nav className="flex items-center gap-6">

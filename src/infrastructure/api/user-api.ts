@@ -59,7 +59,7 @@ export const userApi = {
   },
 
   async getUserById(id: string): Promise<User> {
-    const response = await fetch(`http://localhost:3000/api/user/${id}`);
+    const response = await fetch(`/api/user/${id}`);
     const data = await response.json();
     console.log(data);
 
@@ -192,7 +192,7 @@ export const userApi = {
       const links = await getStableLinksUseCase.execute(user.id);
       for (const link of links) {
         const deleteLinkUseCase = new DeleteLinkUseCase(linkRepository);
-        await deleteLinkUseCase.execute(link.id);
+        await deleteLinkUseCase.execute(link.linkId);
       }
       console.log("On a delete les links");
     }

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CreateReinitPasswordUseCase } from "@/domain/use-cases/CreateReinitPassword.usecase";
+import { useToast } from "@/hooks/use-toast";
 import { ReinitPasswordRepositoryImpl } from "@/infrastructure/repositories/ReinitPasswordRepositoryImpl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -22,6 +23,7 @@ const schema = z.object({
 });
 
 export const ForgetPasswordForm = () => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof schema>>({
@@ -37,11 +39,18 @@ export const ForgetPasswordForm = () => {
       reinitPasswordRepository
     );
     const reinitPassword = await createReinitPasswordUseCase.execute(data);
-    console.log(reinitPassword);
+    console.log("reinit ici", reinitPassword);
 
     if (reinitPassword) {
       console.log("Reinit password created successfully");
       router.push("/forget-password");
+    } else {
+      toast({
+        title: "Erreur",
+        description:
+          "Une erreur est survenue lors de la réinitialisation de votre mot de passe",
+        variant: "destructive",
+      });
     }
   };
 

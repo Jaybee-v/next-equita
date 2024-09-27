@@ -7,9 +7,11 @@ export async function DELETE(
 ) {
   const { id } = params;
 
+  const _id = parseInt(id as unknown as string);
+
   try {
     await prisma.link.delete({
-      where: { id },
+      where: { id: _id },
     });
 
     return NextResponse.json(
@@ -17,6 +19,7 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to delete link" },
       { status: 500 }

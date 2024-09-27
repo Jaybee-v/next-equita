@@ -19,9 +19,14 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Lesson } from "@/domain/entities/Lesson";
 import { LessonCalendarCard } from "./LessonCalendarCard";
+import { Session } from "next-auth";
+import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
+import { GetLessonByStableIdUseCase } from "@/domain/use-cases/GetLessonByStableId.usecase";
+import { GetLessonsForRiderUseCase } from "@/domain/use-cases/GetLessonsForRider.usecase";
 
 interface BaseCalendarProps {
-  lessons: Lesson[];
+  session: Session;
+  searchId?: string | null;
 }
 
 const START_HOUR = 7;
@@ -31,13 +36,48 @@ const HOURS = Array.from(
   (_, i) => i + START_HOUR
 );
 
-export const BaseCalendar = ({ lessons }: BaseCalendarProps) => {
+export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"day" | "week">("week");
+  const [lessons, setLessons] = useState<Lesson[]>([]);
 
   useEffect(() => {
     if (window.innerWidth < 640) setView("day");
   }, []);
+
+  useEffect(() => {
+    const fetchLessons = async () => {
+      if (session.user.role === "stable") {
+        const lessonRepository = new LessonRepositoryImpl();
+        const getLessonByStableIdUseCase = new GetLessonByStableIdUseCase(
+          lessonRepository
+        );
+        const results = await getLessonByStableIdUseCase.execute(
+          session.user.id
+        );
+        setLessons(results);
+      }
+      if (session.user.role === "rider") {
+        const lessonRepository = new LessonRepositoryImpl();
+        const getLessonsForRider = new GetLessonsForRiderUseCase(
+          lessonRepository
+        );
+        const results: Lesson[] = await getLessonsForRider.execute(
+          session.user.id
+        );
+
+        if (searchId) {
+          const selected = results.filter(
+            (lesson) => lesson.stableId === searchId
+          );
+          setLessons(selected);
+        } else {
+          setLessons(results);
+        }
+      }
+    };
+    fetchLessons();
+  }, [session, searchId]);
 
   const navigateDate = (direction: "prev" | "next") => {
     const days = view === "day" ? 1 : 7;

@@ -1,31 +1,26 @@
 "use client";
-import { Lesson } from "@/domain/entities/Lesson";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { BaseCalendar } from "../calendar/BaseCalendar";
 import { useSearchParams } from "next/navigation";
+import { Session } from "next-auth";
 
 interface RiderLessonsByClubProps {
-  lessons: Lesson[];
+  session: Session;
 }
 
-export const RiderLessonsByClub = ({ lessons }: RiderLessonsByClubProps) => {
+export const RiderLessonsByClub = ({ session }: RiderLessonsByClubProps) => {
   const params = useSearchParams();
-  const [selectedLessons, setSelectedLessons] = useState<Lesson[]>([]);
   const searchId = params.get("club");
 
-  React.useEffect(() => {
-    if (searchId) {
-      const selected = lessons.filter((lesson) => lesson.stableId === searchId);
-      setSelectedLessons(selected);
-    } else {
-      setSelectedLessons(lessons);
-    }
-  }, [searchId, lessons]);
+  useEffect(() => {
+    const fetchLessons = async () => {};
+    fetchLessons();
+  }, [searchId, session]);
 
   return (
     <div>
       {" "}
-      <BaseCalendar lessons={selectedLessons} />
+      <BaseCalendar session={session} searchId={searchId || null} />
     </div>
   );
 };
