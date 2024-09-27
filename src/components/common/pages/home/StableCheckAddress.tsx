@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { AddressForm } from "../../forms/AddressForm";
+import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
 
 interface StableCheckAddressProps {
   session: Session;
@@ -20,9 +21,9 @@ export const StableCheckAddress = ({ session }: StableCheckAddressProps) => {
 
   useEffect(() => {
     const fetchAddress = async () => {
-      const checkAddress = await new UserRepositoryImpl().getUserById(
-        session.user.id
-      );
+      const userRepository = new UserRepositoryImpl();
+      const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
+      const checkAddress = await getUserByIdUseCase.execute(session.user.id);
 
       if (checkAddress.address) {
         setOpen(false);

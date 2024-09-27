@@ -2,6 +2,7 @@ import { CreateLinkDto } from "@/domain/dtos/create-link.dto";
 import { Link } from "@/domain/entities/Link";
 import { LinkRepository } from "@/domain/repositories/LinkRepository";
 import { linkApi } from "../api/link-api";
+import { User } from "@/domain/entities/User";
 
 export class LinkRepositoryImpl implements LinkRepository {
   async save(link: CreateLinkDto): Promise<Link> {
@@ -12,7 +13,7 @@ export class LinkRepositoryImpl implements LinkRepository {
     return linkApi.getRiderLinks(riderId);
   }
 
-  async getStableLinks(stableId: string): Promise<Link[]> {
+  async getStableLinks(stableId: string): Promise<User[]> {
     return linkApi.getStableLinks(stableId);
   }
 

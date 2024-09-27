@@ -7,6 +7,7 @@ import { UpdateUserForm } from "../../forms/UpdateUserForm";
 import { AddressForm } from "../../forms/AddressForm";
 import { UpdatePasswordForm } from "../../forms/UpdatePasswordForm";
 import { DeleteAccountForm } from "../../forms/DeleteAccountForm";
+import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
 
 interface StableAccoutPageProps {
   session: Session;
@@ -17,7 +18,9 @@ export const StableAccountPage = ({ session }: StableAccoutPageProps) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await new UserRepositoryImpl().getUserById(session.user.id);
+      const userRepository = new UserRepositoryImpl();
+      const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
+      const user = await getUserByIdUseCase.execute(session.user.id);
       if (user) setUser(user);
     };
     fetchUser();

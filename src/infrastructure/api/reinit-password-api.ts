@@ -14,7 +14,7 @@ export const reinitPasswordApi = {
     console.log("email", email);
 
     const user = await getUserByEmail.execute(email);
-    console.log("user", user);
+    // console.log("user", user);
 
     if (!user) {
       throw new Error("User not found");

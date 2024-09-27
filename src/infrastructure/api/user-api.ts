@@ -59,7 +59,7 @@ export const userApi = {
   },
 
   async getUserById(id: string): Promise<User> {
-    const response = await fetch(`http://localhost:3000/api/user/${id}`);
+    const response = await fetch(`/api/user/${id}`);
     const data = await response.json();
     console.log(data);
 

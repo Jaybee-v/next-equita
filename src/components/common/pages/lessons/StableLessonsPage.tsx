@@ -2,7 +2,6 @@ import { Session } from "next-auth";
 import React from "react";
 import { LessonForm } from "../../forms/LessonForm";
 import { UserCard } from "../../user/UserCard";
-import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { BaseCalendar } from "../../calendar/BaseCalendar";
 import { AddLessonButton } from "./AddLessonButton";
 
@@ -13,10 +12,6 @@ interface StableLessonsPageProps {
 export const StableLessonsPage = async ({
   session,
 }: StableLessonsPageProps) => {
-  const lessons = await new LessonRepositoryImpl().getLessonByStableId(
-    session.user.id
-  );
-
   return (
     <main className="lg:py-4 max-w-6xl mx-auto grid gap-y-6">
       <h1 className="text-4xl font-bold text-center tracking-wide py-2 text-sky-700">
@@ -28,7 +23,7 @@ export const StableLessonsPage = async ({
         </h2>
         <AddLessonButton session={session} />
       </section>
-      <BaseCalendar lessons={lessons} />
+      <BaseCalendar session={session} />
       <div className="flex max-lg:flex-col justify-between w-full">
         <section className="max-w-md w-full bg-card p-6 lg:rounded lg:drop-shadow-md">
           <h2 className="font-semibold text-center text-sky-700">
