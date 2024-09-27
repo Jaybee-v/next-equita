@@ -17,6 +17,10 @@ export class LinkRepositoryImpl implements LinkRepository {
     return linkApi.getStableLinks(stableId);
   }
 
+  async acceptLinkByStable(id: number, isAccepted: boolean): Promise<void> {
+    return linkApi.acceptLinkByStable(id, isAccepted);
+  }
+
   async deleteLink(id: number): Promise<void> {
     return linkApi.deleteLink(id);
   }

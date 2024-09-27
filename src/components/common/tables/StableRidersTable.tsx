@@ -6,12 +6,12 @@ import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Rider } from "@/domain/entities/Rider";
+import { StableRidersTableRow } from "./StableRidersTableRow";
 
 interface StableRidersTableProps {
   session: Session;
@@ -35,23 +35,17 @@ export const StableRidersTable = ({ session }: StableRidersTableProps) => {
         <TableRow>
           <TableHead className="">Nom - Prénom</TableHead>
           <TableHead className="">Niveau</TableHead>
-          <TableHead className="text-right">Niveau</TableHead>
+          <TableHead className="text-right">Statut</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {riders.map((rider) => (
-          <TableRow key={rider.id}>
-            <TableCell>
-              {rider.name} {rider.lastname}
-            </TableCell>
-
-            <TableCell className="">
-              {rider.level === 0 ? "Débutant" : `Galop ${rider.level}`}
-            </TableCell>
-            <TableCell className="text-right">
-              {rider.isAccepted ? "Accepté" : "En attente"}
-            </TableCell>
-          </TableRow>
+          <StableRidersTableRow
+            key={rider.id}
+            rider={rider}
+            setRiders={setRiders}
+            riders={riders}
+          />
         ))}
       </TableBody>
     </Table>

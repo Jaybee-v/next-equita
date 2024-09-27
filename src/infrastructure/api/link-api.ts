@@ -48,6 +48,7 @@ export const linkApi = {
           email: user.email,
           name: user.name,
           lastname: user.lastname!,
+          linkId: link.id,
           level: user.level!,
           isAccepted: link.isAccepted,
           createdAt: link.createdAt,
@@ -61,10 +62,27 @@ export const linkApi = {
     throw new Error("Failed to fetch links");
   },
 
+  async acceptLinkByStable(id: number, isAccepted: boolean): Promise<void> {
+    const updatedLink = await fetch(`/api/link/accept/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isAccepted }),
+    });
+
+    if (updatedLink.status === 200) {
+      return;
+    }
+
+    throw new Error("Failed to accept link");
+  },
+
   async deleteLink(id: number): Promise<void> {
     const deletedLink = await fetch(`/api/link/delete/${id}`, {
       method: "DELETE",
     });
+    console.log(deletedLink);
 
     if (deletedLink.status === 200) {
       return;

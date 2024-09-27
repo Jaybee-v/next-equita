@@ -192,7 +192,7 @@ export const userApi = {
       const links = await getStableLinksUseCase.execute(user.id);
       for (const link of links) {
         const deleteLinkUseCase = new DeleteLinkUseCase(linkRepository);
-        await deleteLinkUseCase.execute(link.id);
+        await deleteLinkUseCase.execute(link.linkId);
       }
       console.log("On a delete les links");
     }
