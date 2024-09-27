@@ -1,8 +1,8 @@
 import { CreateLinkDto } from "@/domain/dtos/create-link.dto";
 import { Link } from "@/domain/entities/Link";
-import { User } from "@/domain/entities/User";
 import { UserRepositoryImpl } from "../repositories/UserRepositoryImpl";
 import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
+import { Rider } from "@/domain/entities/Rider";
 
 export const linkApi = {
   async save(link: CreateLinkDto): Promise<Link> {
@@ -33,17 +33,27 @@ export const linkApi = {
     throw new Error("Failed to fetch links");
   },
 
-  async getStableLinks(id: string): Promise<User[]> {
+  async getStableLinks(id: string): Promise<Rider[]> {
     const response = await fetch(`/api/link/stable/${id}`);
 
     if (response.status === 200) {
       const links = await response.json();
-      const users: User[] = [];
+      const users: Rider[] = [];
       for (const link of links) {
         const userRepository = new UserRepositoryImpl();
         const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
         const user = await getUserByIdUseCase.execute(link.riderId);
-        users.push(user);
+        const rider: Rider = {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          lastname: user.lastname!,
+          level: user.level!,
+          isAccepted: link.isAccepted,
+          createdAt: link.createdAt,
+          updatedAt: link.updatedAt,
+        };
+        users.push(rider);
       }
       return users;
     }

@@ -9,10 +9,10 @@ export default async function StableRidersPage() {
   if (!session) redirect("/");
 
   return (
-    <div>
+    <main className="py-6">
       <article className="max-w-lg mx-auto bg-card p-6 rounded drop-shadow-md">
         <StableRidersTable session={session} />
       </article>
-    </div>
+    </main>
   );
 }

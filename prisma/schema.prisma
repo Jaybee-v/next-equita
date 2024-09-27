@@ -56,12 +56,13 @@ model Lesson {
 }
 
 model Link {
-  id        Int      @id @default(autoincrement())
-  riderId   String
-  stableId  String?
-  teacherId String?
-  isPrimay  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  riderId    String
+  stableId   String?
+  teacherId  String?
+  isPrimay   Boolean  @default(false)
+  isAccepted Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
 
 model ReinitPassword {

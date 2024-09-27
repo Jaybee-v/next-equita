@@ -1,5 +1,4 @@
 "use client";
-import { User } from "@/domain/entities/User";
 import { GetStableLinksUseCase } from "@/domain/use-cases/GetStableLinks.usecase";
 import { LinkRepositoryImpl } from "@/infrastructure/repositories/LinkRepositoryImpl";
 import { Session } from "next-auth";
@@ -12,13 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Rider } from "@/domain/entities/Rider";
 
 interface StableRidersTableProps {
   session: Session;
 }
 
 export const StableRidersTable = ({ session }: StableRidersTableProps) => {
-  const [riders, setRiders] = useState<User[]>([]);
+  const [riders, setRiders] = useState<Rider[]>([]);
 
   useEffect(() => {
     const fetchRiders = async () => {
@@ -34,6 +34,7 @@ export const StableRidersTable = ({ session }: StableRidersTableProps) => {
       <TableHeader>
         <TableRow>
           <TableHead className="">Nom - Prénom</TableHead>
+          <TableHead className="">Niveau</TableHead>
           <TableHead className="text-right">Niveau</TableHead>
         </TableRow>
       </TableHeader>
@@ -44,8 +45,11 @@ export const StableRidersTable = ({ session }: StableRidersTableProps) => {
               {rider.name} {rider.lastname}
             </TableCell>
 
-            <TableCell className="text-right">
+            <TableCell className="">
               {rider.level === 0 ? "Débutant" : `Galop ${rider.level}`}
+            </TableCell>
+            <TableCell className="text-right">
+              {rider.isAccepted ? "Accepté" : "En attente"}
             </TableCell>
           </TableRow>
         ))}
