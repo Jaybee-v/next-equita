@@ -14,8 +14,8 @@ export const StableRidersPageView = ({
 }: StableRidersPageViewProps) => {
   const [selectedRider, setSelectedRider] = useState<Rider | null>(null);
   return (
-    <div className="relative">
-      <article className="max-w-lg mx-auto bg-card p-6 rounded drop-shadow-md">
+    <div className="relative py-6">
+      <article className="max-w-lg mx-auto bg-card p-6 rounded drop-shadow-md py-6">
         <StableRidersTable
           session={session}
           selectedRider={selectedRider}

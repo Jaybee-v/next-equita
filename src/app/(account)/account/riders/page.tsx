@@ -9,7 +9,7 @@ export default async function StableRidersPage() {
   if (!session) redirect("/");
 
   return (
-    <main className="py-6">
+    <main className="h-full">
       <StableRidersPageView session={session} />
     </main>
   );

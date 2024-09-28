@@ -8,7 +8,7 @@ import { UserNavbar } from "./UserNavbar";
 export const Navbar = async () => {
   const session = await auth();
   return (
-    <div className="w-full bg-card shadow">
+    <div className="w-full bg-card shadow sticky">
       <header className="flex justify-between items-center max-w-6xl mx-auto py-2">
         <div>
           <Link

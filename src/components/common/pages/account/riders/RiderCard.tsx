@@ -7,20 +7,21 @@ interface RiderCardProps {
 
 export const RiderCard = ({ rider }: RiderCardProps) => {
   return (
-    <article className="absolute right-6 ">
-      <div className="max-w-md mx-auto bg-card p-6 rounded drop-shadow-md">
+    <article className="absolute top-0 right-0 bg-gray-900 flex justify-center items-center p-6 min-h-[92vh] bg-opacity-20 shadow-2xl">
+      <div className="max-w-md mx-auto bg-card p-6 rounded drop-shadow-md h-fit">
         <h2 className="text-2xl font-bold text-center">Fiche cavalier</h2>
-        <h3 className="text-xl font-bold">
+        <h3 className="text-xl font-semibold">
           {rider.name} {rider.lastname}
         </h3>
-        <p>
-          <span className="font-bold">Niveau:</span>{" "}
-          {rider.level === 0 ? "Débutant" : `Galop ${rider.level}`}
-        </p>
+        <div className="flex justify-between">
+          <h6 className="font-bold">Niveau</h6>
+          <p>{rider.level === 0 ? "Débutant" : `Galop ${rider.level}`}</p>
+        </div>
 
-        <p>
-          <span className="font-bold">@</span> {rider.email}
-        </p>
+        <div className="flex justify-between">
+          <h6 className="font-bold">@</h6>
+          <p>{rider.email}</p>
+        </div>
       </div>
     </article>
   );
