@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { StableRidersTable } from "@/components/common/tables/StableRidersTable";
+import { StableRidersPageView } from "@/components/common/pages/account/riders/StableRidersPageView";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -10,9 +10,7 @@ export default async function StableRidersPage() {
 
   return (
     <main className="py-6">
-      <article className="max-w-lg mx-auto bg-card p-6 rounded drop-shadow-md">
-        <StableRidersTable session={session} />
-      </article>
+      <StableRidersPageView session={session} />
     </main>
   );
 }

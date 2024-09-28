@@ -15,9 +15,15 @@ import { StableRidersTableRow } from "./StableRidersTableRow";
 
 interface StableRidersTableProps {
   session: Session;
+  selectedRider: Rider | null;
+  setSelectedRider: (rider: Rider | null) => void;
 }
 
-export const StableRidersTable = ({ session }: StableRidersTableProps) => {
+export const StableRidersTable = ({
+  session,
+  selectedRider,
+  setSelectedRider,
+}: StableRidersTableProps) => {
   const [riders, setRiders] = useState<Rider[]>([]);
 
   useEffect(() => {
@@ -29,6 +35,7 @@ export const StableRidersTable = ({ session }: StableRidersTableProps) => {
     };
     fetchRiders();
   }, [session]);
+
   return (
     <Table>
       <TableHeader>
@@ -45,6 +52,8 @@ export const StableRidersTable = ({ session }: StableRidersTableProps) => {
             rider={rider}
             setRiders={setRiders}
             riders={riders}
+            selectedRider={selectedRider}
+            setSelectedRider={setSelectedRider}
           />
         ))}
       </TableBody>

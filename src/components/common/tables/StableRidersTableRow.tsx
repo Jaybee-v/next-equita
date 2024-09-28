@@ -21,12 +21,16 @@ interface StableRidersTableRowProps {
   rider: Rider;
   riders: Rider[];
   setRiders: React.Dispatch<React.SetStateAction<Rider[]>>;
+  selectedRider: Rider | null;
+  setSelectedRider: (rider: Rider | null) => void;
 }
 
 export const StableRidersTableRow = ({
   rider,
   setRiders,
   riders,
+  selectedRider,
+  setSelectedRider,
 }: StableRidersTableRowProps) => {
   const [isAccepted, setIsAccepted] = useState<boolean>(rider.isAccepted);
 
@@ -51,7 +55,13 @@ export const StableRidersTableRow = ({
   };
 
   return (
-    <TableRow>
+    <TableRow
+      className="cursor-pointer"
+      onClick={() => {
+        if (selectedRider) setSelectedRider(null);
+        else setSelectedRider(rider);
+      }}
+    >
       <TableCell>
         {rider.name} {rider.lastname}
       </TableCell>
