@@ -35,6 +35,10 @@ export class LessonRepositoryImpl implements LessonRepository {
     return lessons;
   }
 
+  async updateLesson(id: string, lesson: CreateLessonDto): Promise<Lesson> {
+    return lessonApi.updateLesson(id, lesson);
+  }
+
   async deleteLesson(id: string): Promise<void> {
     return lessonApi.deleteLesson(id);
   }

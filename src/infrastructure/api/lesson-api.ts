@@ -49,6 +49,22 @@ export const lessonApi = {
     throw new Error(data.error);
   },
 
+  async updateLesson(id: string, lesson: CreateLessonDto): Promise<Lesson> {
+    const response = await fetch(`/api/lesson/update/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(lesson),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
+
   async deleteLesson(id: string): Promise<void> {
     const deletedLesson = await fetch(`/api/lesson/delete/${id}`, {
       method: "DELETE",
