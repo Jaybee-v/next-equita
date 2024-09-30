@@ -24,6 +24,7 @@ import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonReposi
 import { GetLessonByStableIdUseCase } from "@/domain/use-cases/GetLessonByStableId.usecase";
 import { GetLessonsForRiderUseCase } from "@/domain/use-cases/GetLessonsForRider.usecase";
 import { Loader } from "../Loader";
+import { GetLessonByTeacherUseCase } from "@/domain/use-cases/GetLessonByTeacher.usecase";
 
 interface BaseCalendarProps {
   session: Session;
@@ -67,6 +68,11 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
           if (searchId) {
             results = results.filter((lesson) => lesson.stableId === searchId);
           }
+        } else if (session.user.role === "teacher") {
+          const getLessonByTeacherUseCase = new GetLessonByTeacherUseCase(
+            lessonRepository
+          );
+          results = await getLessonByTeacherUseCase.execute(session.user.id);
         }
 
         setLessons(results);

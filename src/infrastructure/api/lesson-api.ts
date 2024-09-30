@@ -28,7 +28,17 @@ export const lessonApi = {
   },
 
   async getLessonByStableId(stableId: string): Promise<Lesson[]> {
-    const response = await fetch(`/api/lesson/${stableId}`);
+    const response = await fetch(`/api/lesson/stable/${stableId}`);
+    const data = await response.json();
+
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
+
+  async findByTeacher(teacherId: string): Promise<Lesson[]> {
+    const response = await fetch(`/api/lesson/teacher/${teacherId}`);
     const data = await response.json();
 
     if (response.status === 200) {

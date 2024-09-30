@@ -36,6 +36,14 @@ export const StableRidersTable = ({
     fetchRiders();
   }, [session]);
 
+  if (riders.length === 0) {
+    return (
+      <div className="text-center">
+        Vous n'avez pas encore de cavaliers dans votre écurie
+      </div>
+    );
+  }
+
   return (
     <Table>
       <TableHeader>

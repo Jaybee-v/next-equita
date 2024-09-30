@@ -17,6 +17,10 @@ export class LessonRepositoryImpl implements LessonRepository {
     return lessonApi.getLessonByStableId(stableId);
   }
 
+  async findByTeacher(teacherId: string): Promise<Lesson[]> {
+    return lessonApi.findByTeacher(teacherId);
+  }
+
   async getLessonsByDate(date: string): Promise<Lesson[]> {
     return lessonApi.getLessonsByDate(date);
   }
