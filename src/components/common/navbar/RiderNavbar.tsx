@@ -1,6 +1,7 @@
 import { Session } from "next-auth";
 import Link from "next/link";
 import React from "react";
+import { UserMenu } from "./UserMenu";
 
 interface RiderNavbarProps {
   session: Session;
@@ -20,7 +21,7 @@ export const RiderNavbar = ({ session }: RiderNavbarProps) => {
           <Link href="/contact">Cavaliers</Link>
         </li>
       </ul>
-      <Link href="/">{session.user.name}</Link>
+      <UserMenu session={session} />
     </nav>
   );
 };
