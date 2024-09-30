@@ -27,12 +27,15 @@ import { useToast } from "@/hooks/use-toast";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { Session } from "next-auth";
 import { CreateLessonUseCase } from "@/domain/use-cases/CreateLesson.usecase";
+import { Lesson } from "@/domain/entities/Lesson";
+import { useRouter } from "next/navigation";
 
 interface LessonFormProps {
   session: Session;
   start?: string;
   end?: string;
   dateState?: Date;
+  lesson?: Lesson;
 }
 
 const schema = z.object({
@@ -54,27 +57,31 @@ export const LessonForm = ({
   start,
   end,
   dateState,
+  lesson,
 }: LessonFormProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
     defaultValues: {
-      title: "",
-      description: "",
-      type: "",
+      title: lesson ? lesson.title : "",
+      description: lesson ? lesson.description : "",
+      type: lesson ? lesson.type : "",
       date: dateState
         ? new Date(dateState).toISOString().split("T")[0]
+        : lesson
+        ? new Date(lesson.date).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
-      start: start || "",
-      end: end || "",
+      start: start ? start : lesson ? lesson.start : "",
+      end: end ? end : lesson ? lesson.end : "",
       // price: 0,
       isPublic: false,
-      emptyPlaces: "",
+      emptyPlaces: lesson ? lesson.emptyPlaces.toString() : "1",
       stableId: session.user.id as string,
-      requiredLevel: "",
+      requiredLevel: lesson ? lesson.requiredLevel.toString() : "0",
     },
   });
 
@@ -320,8 +327,22 @@ export const LessonForm = ({
           )}
         /> */}
         <Button className="w-full mt-6" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "En cours de traitement ..." : "Créer la leçon"}
+          {isSubmitting
+            ? "En cours de traitement ..."
+            : lesson
+            ? "Modifier la leçon"
+            : "Créer la leçon"}
         </Button>
+        {lesson && (
+          <Button
+            className="w-full mt-2"
+            type="button"
+            variant={"outline"}
+            onClick={() => router.back()}
+          >
+            Annuler
+          </Button>
+        )}
       </form>
     </Form>
   );

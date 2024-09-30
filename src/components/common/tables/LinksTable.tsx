@@ -49,7 +49,7 @@ export const LinksTable = ({ links }: LinksTableProps) => {
     fetchUsers();
   }, [links]);
   return (
-    <div className="grid lg:grid-cols-3 gap-4 px-4">
+    <div className="grid lg:grid-cols-3 gap-4 px-4 container">
       {targets.map((target) => (
         <Card key={target.id} className="">
           <CardHeader>

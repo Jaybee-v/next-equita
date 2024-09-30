@@ -41,6 +41,7 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"day" | "week">("week");
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (window.innerWidth < 640) setView("day");
@@ -48,33 +49,31 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
 
   useEffect(() => {
     const fetchLessons = async () => {
-      if (session.user.role === "stable") {
+      setIsLoading(true);
+      try {
         const lessonRepository = new LessonRepositoryImpl();
-        const getLessonByStableIdUseCase = new GetLessonByStableIdUseCase(
-          lessonRepository
-        );
-        const results = await getLessonByStableIdUseCase.execute(
-          session.user.id
-        );
-        setLessons(results);
-      }
-      if (session.user.role === "rider") {
-        const lessonRepository = new LessonRepositoryImpl();
-        const getLessonsForRider = new GetLessonsForRiderUseCase(
-          lessonRepository
-        );
-        const results: Lesson[] = await getLessonsForRider.execute(
-          session.user.id
-        );
+        let results: Lesson[] = [];
 
-        if (searchId) {
-          const selected = results.filter(
-            (lesson) => lesson.stableId === searchId
+        if (session.user.role === "stable") {
+          const getLessonByStableIdUseCase = new GetLessonByStableIdUseCase(
+            lessonRepository
           );
-          setLessons(selected);
-        } else {
-          setLessons(results);
+          results = await getLessonByStableIdUseCase.execute(session.user.id);
+        } else if (session.user.role === "rider") {
+          const getLessonsForRider = new GetLessonsForRiderUseCase(
+            lessonRepository
+          );
+          results = await getLessonsForRider.execute(session.user.id);
+          if (searchId) {
+            results = results.filter((lesson) => lesson.stableId === searchId);
+          }
         }
+
+        setLessons(results);
+      } catch (error) {
+        console.error("Error fetching lessons:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchLessons();
@@ -91,10 +90,7 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
   const weekDays = generateWeekDays(currentDate);
 
   const getLessonsForDay = (day: Date) => {
-    return lessons.filter((lesson) => {
-      const lessonDate = new Date(lesson.date);
-      return isSameDay(lessonDate, day);
-    });
+    return lessons.filter((lesson) => isSameDay(new Date(lesson.date), day));
   };
 
   const calculateOverlap = (dayLessons: Lesson[]) => {
@@ -154,12 +150,12 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
     return (
       <div
         key={lesson.id}
-        className="absolute bg-blue-200 rounded p-1 overflow-hidden"
+        className="absolute rounded-md overflow-hidden shadow-sm transition-all hover:shadow-md"
         style={{
           top: `${(startSlot * 100) / HOURS.length}%`,
           height: `${(duration * 100) / HOURS.length}%`,
-          left: `0%`,
-          width: `100%`,
+          left: `${left}%`,
+          width: `${width}%`,
           zIndex: 10,
         }}
       >
@@ -169,24 +165,18 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
   };
 
   return (
-    <div className="container mx-auto p-4 bg-card rounded drop-shadow-md">
-      <div className="flex justify-between max-lg:flex-col max-lg:gap-2 lg:items-center mb-4">
-        <div className="flex items-center space-x-2">
+    <div className="container mx-auto p-4 bg-card rounded-lg shadow-md">
+      <div className="flex flex-col lg:flex-row justify-between items-center mb-6 space-y-4 lg:space-y-0">
+        <div className="flex items-center space-x-4">
           <Button
             onClick={() => navigateDate("prev")}
             variant="outline"
             size="icon"
+            aria-label="Previous"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button
-            onClick={() => navigateDate("next")}
-            variant="outline"
-            size="icon"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-          <h2 className="lg:text-xl font-semibold capitalize">
+          <h2 className="text-xl font-semibold capitalize">
             {view === "day"
               ? new Date(currentDate).toLocaleDateString("fr-FR", {
                   weekday: "long",
@@ -197,76 +187,86 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
               : `${new Date(weekDays[0]).toLocaleDateString("fr-FR", {
                   month: "short",
                   day: "numeric",
-                  year: "numeric",
                 })} - ${new Date(weekDays[6]).toLocaleDateString("fr-FR", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
                 })}`}
           </h2>
-        </div>
-        <article className="hidden lg:block">
-          <Select
-            value={view}
-            onValueChange={(value: "day" | "week") => setView(value)}
+          <Button
+            onClick={() => navigateDate("next")}
+            variant="outline"
+            size="icon"
+            aria-label="Next"
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select view" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="day">Jour</SelectItem>
-              <SelectItem value="week">Semaine</SelectItem>
-            </SelectContent>
-          </Select>
-        </article>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+        <Select
+          value={view}
+          onValueChange={(value: "day" | "week") => setView(value)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select view" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="day">Jour</SelectItem>
+            <SelectItem value="week">Semaine</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="border rounded-lg overflow-hidden">
-        <div className="grid grid-cols-8 bg-gray-100">
-          <div className="w-20"></div>
-          {view === "week" &&
-            weekDays.map((day, index) => (
-              <div
-                key={index}
-                className="flex justify-start gap-4 py-2 font-semibold"
-              >
-                <div className="capitalize">
-                  {new Date(day).toLocaleDateString("fr-FR", {
-                    weekday: "short",
-                  })}
-                </div>
-                <div>
-                  {new Date(day).toLocaleDateString("fr-FR", {
-                    day: "numeric",
-                  })}
-                </div>
-              </div>
-            ))}
+      {isLoading ? (
+        <div className="flex justify-center items-center h-96">
+          <Loader />
         </div>
-        <div className="grid grid-cols-[auto,1fr]">
-          <div className="w-20">
-            {timeSlots.map((slot, index) => (
-              <div
-                key={index}
-                className=" h-28 border-b text-right pr-2 text-sm text-gray-500"
-              >
-                {slot.time}
-              </div>
-            ))}
+      ) : (
+        <div className="border rounded-lg overflow-hidden bg-card">
+          <div className="grid grid-cols-8 bg-muted">
+            <div className="w-20"></div>
+            {view === "week" &&
+              weekDays.map((day, index) => (
+                <div
+                  key={index}
+                  className="py-2 px-2 font-semibold text-center"
+                >
+                  <div className="capitalize text-sm">
+                    {new Date(day).toLocaleDateString("fr-FR", {
+                      weekday: "short",
+                    })}
+                  </div>
+                  <div className="text-lg">
+                    {new Date(day).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                    })}
+                  </div>
+                </div>
+              ))}
           </div>
-          <div
-            className={`grid ${
-              view === "week" ? "grid-cols-7" : "grid-cols-1"
-            }`}
-          >
-            {view === "week"
-              ? weekDays.map((day, dayIndex) => {
+          <div className="grid grid-cols-[auto,1fr]">
+            <div className="w-20">
+              {timeSlots.map((slot, index) => (
+                <div
+                  key={index}
+                  className="h-28 border-b text-right pr-2 text-sm text-muted-foreground py-1"
+                >
+                  {slot.time}
+                </div>
+              ))}
+            </div>
+            <div
+              className={`grid ${
+                view === "week" ? "grid-cols-7" : "grid-cols-1"
+              }`}
+            >
+              {(view === "week" ? weekDays : [currentDate]).map(
+                (day, dayIndex) => {
                   const dayLessons = getLessonsForDay(day);
                   const { overlaps, maxOverlap } = calculateOverlap(dayLessons);
                   return (
-                    <div key={dayIndex} className="border-l relative ">
+                    <div key={dayIndex} className="border-l relative">
                       {timeSlots.map((_, slotIndex) => (
-                        <div key={slotIndex} className=" h-28 border-b" />
+                        <div key={slotIndex} className="h-28 border-b" />
                       ))}
                       {dayLessons.map((lesson) =>
                         renderLesson(
@@ -278,34 +278,12 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
                       )}
                     </div>
                   );
-                })
-              : (() => {
-                  const dayLessons = getLessonsForDay(currentDate);
-                  const { overlaps, maxOverlap } = calculateOverlap(dayLessons);
-                  console.log(
-                    " combien de leçons ce jour ,",
-                    dayLessons.length
-                  );
-
-                  return (
-                    <div className={`relative`}>
-                      {timeSlots.map((_, slotIndex) => (
-                        <div key={slotIndex} className=" h-28 border-b" />
-                      ))}
-                      {dayLessons.map((lesson) =>
-                        renderLesson(
-                          lesson,
-                          currentDate,
-                          overlaps[lesson.id],
-                          maxOverlap[lesson.id]
-                        )
-                      )}
-                    </div>
-                  );
-                })()}
+                }
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -58,7 +58,7 @@ export const StableRidersTableRow = ({
     <TableRow
       className="cursor-pointer"
       onClick={() => {
-        if (selectedRider) setSelectedRider(null);
+        if (selectedRider === rider) setSelectedRider(null);
         else setSelectedRider(rider);
       }}
     >
