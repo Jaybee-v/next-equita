@@ -1,5 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Link } from "@/domain/entities/Link";
 import { User } from "@/domain/entities/User";
 import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
@@ -42,18 +49,24 @@ export const LinksTable = ({ links }: LinksTableProps) => {
     fetchUsers();
   }, [links]);
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid lg:grid-cols-3 gap-4 px-4 container">
       {targets.map((target) => (
-        <article key={target.id} className="bg-card p-6 rounded-lg shadow">
-          <h2>{target.name}</h2>
-          <p>{target.email}</p>
-          <p className="font-semibold">
-            {target.address?.zipCode} {target.address?.city}
-          </p>
-          <Button onClick={() => router.push(`/lessons?club=${target.id}`)}>
-            Voir les leçons
-          </Button>
-        </article>
+        <Card key={target.id} className="">
+          <CardHeader>
+            <CardTitle>{target.name}</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-2">
+            <p>{target.email}</p>
+            <p className="font-semibold">
+              {target.address?.zipCode} {target.address?.city}
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-center">
+            <Button onClick={() => router.push(`/lessons?club=${target.id}`)}>
+              Voir les leçons
+            </Button>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   );

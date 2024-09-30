@@ -9,6 +9,10 @@ export class LessonRepositoryImpl implements LessonRepository {
     return lessonApi.save(lesson);
   }
 
+  async getLessonById(id: string): Promise<Lesson> {
+    return lessonApi.getLessonById(id);
+  }
+
   async getLessonByStableId(stableId: string): Promise<Lesson[]> {
     return lessonApi.getLessonByStableId(stableId);
   }
@@ -29,6 +33,10 @@ export class LessonRepositoryImpl implements LessonRepository {
     }
 
     return lessons;
+  }
+
+  async updateLesson(id: string, lesson: CreateLessonDto): Promise<Lesson> {
+    return lessonApi.updateLesson(id, lesson);
   }
 
   async deleteLesson(id: string): Promise<void> {

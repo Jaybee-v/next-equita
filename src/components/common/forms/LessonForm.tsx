@@ -27,12 +27,16 @@ import { useToast } from "@/hooks/use-toast";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { Session } from "next-auth";
 import { CreateLessonUseCase } from "@/domain/use-cases/CreateLesson.usecase";
+import { Lesson } from "@/domain/entities/Lesson";
+import { useRouter } from "next/navigation";
+import { UpdateLessonUseCase } from "@/domain/use-cases/UpdateLesson.usecase";
 
 interface LessonFormProps {
   session: Session;
   start?: string;
   end?: string;
   dateState?: Date;
+  lesson?: Lesson;
 }
 
 const schema = z.object({
@@ -54,57 +58,88 @@ export const LessonForm = ({
   start,
   end,
   dateState,
+  lesson,
 }: LessonFormProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
     defaultValues: {
-      title: "",
-      description: "",
-      type: "",
+      title: lesson ? lesson.title : "",
+      description: lesson ? lesson.description : "",
+      type: lesson ? lesson.type : "",
       date: dateState
         ? new Date(dateState).toISOString().split("T")[0]
+        : lesson
+        ? new Date(lesson.date).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
-      start: start || "",
-      end: end || "",
+      start: start ? start : lesson ? lesson.start : "",
+      end: end ? end : lesson ? lesson.end : "",
       // price: 0,
       isPublic: false,
-      emptyPlaces: "",
+      emptyPlaces: lesson ? lesson.emptyPlaces.toString() : "1",
       stableId: session.user.id as string,
-      requiredLevel: "",
+      requiredLevel: lesson ? lesson.requiredLevel.toString() : "0",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     setIsSubmitting(true);
     try {
-      console.log(data);
+      const lessonReporitory = new LessonRepositoryImpl();
+      if (!lesson) {
+        console.log(data);
 
-      const lessontReporitory = new LessonRepositoryImpl();
-      const createLessonUseCase = new CreateLessonUseCase(lessontReporitory);
+        const createLessonUseCase = new CreateLessonUseCase(lessonReporitory);
 
-      const lesson = await createLessonUseCase.execute({
-        title: data.title,
-        description: data.description || "",
-        type: data.type,
-        date: new Date(data.date),
-        start: data.start.toString(),
-        end: data.end.toString(),
-        isPublic: data.isPublic,
-        emptyPlaces: parseInt(data.emptyPlaces),
-        stableId: data.stableId,
-        requiredLevel: parseInt(data.requiredLevel),
-      });
-      console.log("RESULT LESSON HERE", lesson);
-      if (lesson) {
-        toast({
-          title: "Leçon créée",
-          description: `La leçon ${data.title} a bien été créée.`,
+        const lessonCreated = await createLessonUseCase.execute({
+          title: data.title,
+          description: data.description || "",
+          type: data.type,
+          date: new Date(data.date),
+          start: data.start.toString(),
+          end: data.end.toString(),
+          isPublic: data.isPublic,
+          emptyPlaces: parseInt(data.emptyPlaces),
+          stableId: data.stableId,
+          requiredLevel: parseInt(data.requiredLevel),
         });
-        form.reset();
+        console.log("RESULT LESSON HERE", lessonCreated);
+        if (lessonCreated) {
+          toast({
+            title: "Leçon créée",
+            description: `La leçon ${data.title} a bien été créée.`,
+          });
+          form.reset();
+        }
+      }
+      if (lesson) {
+        console.log(data);
+        const updateLessonUseCase = new UpdateLessonUseCase(lessonReporitory);
+        const lessonUpdated = await updateLessonUseCase.execute(lesson.id, {
+          title: data.title,
+          description: data.description || "",
+          type: data.type,
+          date: new Date(data.date),
+          start: data.start.toString(),
+          end: data.end.toString(),
+          isPublic: data.isPublic,
+          emptyPlaces: parseInt(data.emptyPlaces),
+          requiredLevel: parseInt(data.requiredLevel),
+        });
+        console.log("RESULT LESSON HERE", lessonUpdated);
+        if (lessonUpdated) {
+          toast({
+            title: "Leçon modifiée",
+            description: `La leçon ${data.title} a bien été modifiée.`,
+          });
+          router.push("/lessons");
+          router.refresh();
+          form.reset();
+        }
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -320,8 +355,22 @@ export const LessonForm = ({
           )}
         /> */}
         <Button className="w-full mt-6" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "En cours de traitement ..." : "Créer la leçon"}
+          {isSubmitting
+            ? "En cours de traitement ..."
+            : lesson
+            ? "Modifier la leçon"
+            : "Créer la leçon"}
         </Button>
+        {lesson && (
+          <Button
+            className="w-full mt-2"
+            type="button"
+            variant={"outline"}
+            onClick={() => router.back()}
+          >
+            Annuler
+          </Button>
+        )}
       </form>
     </Form>
   );

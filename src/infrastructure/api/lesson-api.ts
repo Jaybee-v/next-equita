@@ -18,6 +18,15 @@ export const lessonApi = {
     throw new Error(data.error);
   },
 
+  async getLessonById(id: string): Promise<Lesson> {
+    const response = await fetch(`/api/lesson/by-id/${id}`);
+    const data = await response.json();
+    if (response.status === 200) {
+      return data;
+    }
+    throw new Error(data.error);
+  },
+
   async getLessonByStableId(stableId: string): Promise<Lesson[]> {
     const response = await fetch(`/api/lesson/${stableId}`);
     const data = await response.json();
@@ -37,6 +46,22 @@ export const lessonApi = {
     }
     console.log(data);
 
+    throw new Error(data.error);
+  },
+
+  async updateLesson(id: string, lesson: CreateLessonDto): Promise<Lesson> {
+    const response = await fetch(`/api/lesson/update/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(lesson),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (response.status === 200) {
+      return data;
+    }
     throw new Error(data.error);
   },
 
