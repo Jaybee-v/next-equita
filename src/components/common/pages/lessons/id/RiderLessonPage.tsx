@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { GetLessonByIdUseCase } from "@/domain/use-cases/GetLessonById.usecase";
-import { Loader } from "lucide-react";
+import { Loader } from "@/components/common/Loader";
 
 interface RiderLessonPageProps {
   lessonId: string;

@@ -50,7 +50,7 @@ export const UserCard = ({ session }: UserCardProps) => {
                 ? "Cavalier"
                 : session.user.role === "stable"
                 ? "Gérant de centre équestre"
-                : "Moniteur indépendant            "}
+                : "Moniteur indépendant"}
             </p>
           </div>
         </div>

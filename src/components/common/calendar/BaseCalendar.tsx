@@ -23,6 +23,7 @@ import { Session } from "next-auth";
 import { LessonRepositoryImpl } from "@/infrastructure/repositories/LessonRepositoryImpl";
 import { GetLessonByStableIdUseCase } from "@/domain/use-cases/GetLessonByStableId.usecase";
 import { GetLessonsForRiderUseCase } from "@/domain/use-cases/GetLessonsForRider.usecase";
+import { Loader } from "../Loader";
 
 interface BaseCalendarProps {
   session: Session;
