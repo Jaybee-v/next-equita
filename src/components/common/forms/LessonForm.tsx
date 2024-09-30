@@ -29,6 +29,7 @@ import { Session } from "next-auth";
 import { CreateLessonUseCase } from "@/domain/use-cases/CreateLesson.usecase";
 import { Lesson } from "@/domain/entities/Lesson";
 import { useRouter } from "next/navigation";
+import { UpdateLessonUseCase } from "@/domain/use-cases/UpdateLesson.usecase";
 
 interface LessonFormProps {
   session: Session;
@@ -88,30 +89,57 @@ export const LessonForm = ({
   const onSubmit = async (data: z.infer<typeof schema>) => {
     setIsSubmitting(true);
     try {
-      console.log(data);
+      const lessonReporitory = new LessonRepositoryImpl();
+      if (!lesson) {
+        console.log(data);
 
-      const lessontReporitory = new LessonRepositoryImpl();
-      const createLessonUseCase = new CreateLessonUseCase(lessontReporitory);
+        const createLessonUseCase = new CreateLessonUseCase(lessonReporitory);
 
-      const lesson = await createLessonUseCase.execute({
-        title: data.title,
-        description: data.description || "",
-        type: data.type,
-        date: new Date(data.date),
-        start: data.start.toString(),
-        end: data.end.toString(),
-        isPublic: data.isPublic,
-        emptyPlaces: parseInt(data.emptyPlaces),
-        stableId: data.stableId,
-        requiredLevel: parseInt(data.requiredLevel),
-      });
-      console.log("RESULT LESSON HERE", lesson);
-      if (lesson) {
-        toast({
-          title: "Leçon créée",
-          description: `La leçon ${data.title} a bien été créée.`,
+        const lessonCreated = await createLessonUseCase.execute({
+          title: data.title,
+          description: data.description || "",
+          type: data.type,
+          date: new Date(data.date),
+          start: data.start.toString(),
+          end: data.end.toString(),
+          isPublic: data.isPublic,
+          emptyPlaces: parseInt(data.emptyPlaces),
+          stableId: data.stableId,
+          requiredLevel: parseInt(data.requiredLevel),
         });
-        form.reset();
+        console.log("RESULT LESSON HERE", lessonCreated);
+        if (lessonCreated) {
+          toast({
+            title: "Leçon créée",
+            description: `La leçon ${data.title} a bien été créée.`,
+          });
+          form.reset();
+        }
+      }
+      if (lesson) {
+        console.log(data);
+        const updateLessonUseCase = new UpdateLessonUseCase(lessonReporitory);
+        const lessonUpdated = await updateLessonUseCase.execute(lesson.id, {
+          title: data.title,
+          description: data.description || "",
+          type: data.type,
+          date: new Date(data.date),
+          start: data.start.toString(),
+          end: data.end.toString(),
+          isPublic: data.isPublic,
+          emptyPlaces: parseInt(data.emptyPlaces),
+          requiredLevel: parseInt(data.requiredLevel),
+        });
+        console.log("RESULT LESSON HERE", lessonUpdated);
+        if (lessonUpdated) {
+          toast({
+            title: "Leçon modifiée",
+            description: `La leçon ${data.title} a bien été modifiée.`,
+          });
+          router.push("/lessons");
+          router.refresh();
+          form.reset();
+        }
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
