@@ -8,7 +8,7 @@ interface RiderLessonsPageProps {
 
 export const RiderLessonsPage = ({ session }: RiderLessonsPageProps) => {
   return (
-    <div>
+    <div className="max-w-6xl mx-auto py-6">
       <RiderLessonsByClub session={session} />
     </div>
   );

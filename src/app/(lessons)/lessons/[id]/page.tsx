@@ -1,5 +1,11 @@
+import { RiderLessonPage } from "@/components/common/pages/lessons/id/RiderLessonPage";
+
 import React from "react";
 
-export default function LessonByIdPage() {
-  return <div>LessonByIdPage</div>;
+export default async function LessonByIdPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  return <RiderLessonPage lessonId={params.id} />;
 }

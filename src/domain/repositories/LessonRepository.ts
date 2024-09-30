@@ -3,6 +3,7 @@ import { Lesson } from "../entities/Lesson";
 
 export interface LessonRepository {
   save(lesson: CreateLessonDto): Promise<Lesson>;
+  getLessonById(id: string): Promise<Lesson>;
   getLessonByStableId(stableId: string): Promise<Lesson[]>;
   getLessonsByDate(date: string): Promise<Lesson[]>;
   getLessonsForRider(riderId: string): Promise<Lesson[]>;

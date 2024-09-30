@@ -29,6 +29,19 @@ export const userApi = {
     const data = await createdUser.json();
     console.log(data);
     if (createdUser.status === 201) {
+      await fetch("/api/send-email", {
+        method: "POST",
+        body: JSON.stringify({
+          to: user.email,
+          templateName: "welcome",
+          variables: {
+            name: user.name,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       return data;
     }
     throw new Error(data.error);

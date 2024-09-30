@@ -162,7 +162,7 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
           zIndex: 10,
         }}
       >
-        <LessonCalendarCard lesson={lesson} />
+        <LessonCalendarCard lesson={lesson} session={session} />
       </div>
     );
   };
@@ -247,7 +247,7 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
             {timeSlots.map((slot, index) => (
               <div
                 key={index}
-                className="h-20 border-b text-right pr-2 text-sm text-gray-500"
+                className=" h-28 border-b text-right pr-2 text-sm text-gray-500"
               >
                 {slot.time}
               </div>
@@ -265,7 +265,7 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
                   return (
                     <div key={dayIndex} className="border-l relative ">
                       {timeSlots.map((_, slotIndex) => (
-                        <div key={slotIndex} className="h-20 border-b" />
+                        <div key={slotIndex} className=" h-28 border-b" />
                       ))}
                       {dayLessons.map((lesson) =>
                         renderLesson(
@@ -289,7 +289,7 @@ export const BaseCalendar = ({ session, searchId }: BaseCalendarProps) => {
                   return (
                     <div className={`relative`}>
                       {timeSlots.map((_, slotIndex) => (
-                        <div key={slotIndex} className="h-20 border-b" />
+                        <div key={slotIndex} className=" h-28 border-b" />
                       ))}
                       {dayLessons.map((lesson) =>
                         renderLesson(

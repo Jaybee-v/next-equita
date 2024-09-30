@@ -9,6 +9,10 @@ export class LessonRepositoryImpl implements LessonRepository {
     return lessonApi.save(lesson);
   }
 
+  async getLessonById(id: string): Promise<Lesson> {
+    return lessonApi.getLessonById(id);
+  }
+
   async getLessonByStableId(stableId: string): Promise<Lesson[]> {
     return lessonApi.getLessonByStableId(stableId);
   }
