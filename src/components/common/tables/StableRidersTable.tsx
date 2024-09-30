@@ -13,6 +13,7 @@ import {
 import { Rider } from "@/domain/entities/Rider";
 import { StableRidersTableRow } from "./StableRidersTableRow";
 import { GetTeacherLinksUseCase } from "@/domain/use-cases/GetTeacherLinks.usecase";
+import { Loader } from "../Loader";
 
 interface StableRidersTableProps {
   session: Session;
@@ -26,6 +27,7 @@ export const StableRidersTable = ({
   setSelectedRider,
 }: StableRidersTableProps) => {
   const [riders, setRiders] = useState<Rider[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRiders = async () => {
@@ -34,6 +36,7 @@ export const StableRidersTable = ({
         const getStableLinksUseCase = new GetStableLinksUseCase(linkRepository);
         const results = await getStableLinksUseCase.execute(session.user.id);
         setRiders(results);
+        setIsLoading(false);
       }
       if (session.user.role === "teacher") {
         const getTeacherLinkUseCase = new GetTeacherLinksUseCase(
@@ -41,10 +44,13 @@ export const StableRidersTable = ({
         );
         const results = await getTeacherLinkUseCase.execute(session.user.id);
         setRiders(results);
+        setIsLoading(false);
       }
     };
     fetchRiders();
   }, [session]);
+
+  if (isLoading) return <Loader />;
 
   if (riders.length === 0) {
     return (

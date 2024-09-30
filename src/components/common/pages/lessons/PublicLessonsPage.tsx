@@ -32,7 +32,7 @@ export const PublicLessonsPage = () => {
       />
       <section className="grid grid-cols-4">
         {lessons.map((lesson) => (
-          <LessonCalendarCard key={lesson.id} lesson={lesson} />
+          <LessonCalendarCard session={null} key={lesson.id} lesson={lesson} />
         ))}
       </section>
     </div>

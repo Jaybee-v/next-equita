@@ -9,6 +9,7 @@ import { UpdatePasswordForm } from "../../forms/UpdatePasswordForm";
 import { DeleteAccountForm } from "../../forms/DeleteAccountForm";
 import { GetUserByIdUseCase } from "@/domain/use-cases/GetUserById.usecase";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader } from "../../Loader";
 
 interface StableAccoutPageProps {
   session: Session;
@@ -27,7 +28,7 @@ export const StableAccountPage = ({ session }: StableAccoutPageProps) => {
     fetchUser();
   }, [session.user.id]);
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return <Loader />;
 
   return (
     <main className="max-w-6xl mx-auto py-6">
