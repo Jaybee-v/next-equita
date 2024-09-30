@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Rider } from "@/domain/entities/Rider";
 import { StableRidersTableRow } from "./StableRidersTableRow";
+import { GetTeacherLinksUseCase } from "@/domain/use-cases/GetTeacherLinks.usecase";
 
 interface StableRidersTableProps {
   session: Session;
@@ -29,12 +30,29 @@ export const StableRidersTable = ({
   useEffect(() => {
     const fetchRiders = async () => {
       const linkRepository = new LinkRepositoryImpl();
-      const getStableLinksUseCase = new GetStableLinksUseCase(linkRepository);
-      const results = await getStableLinksUseCase.execute(session.user.id);
-      setRiders(results);
+      if (session.user.role === "stable") {
+        const getStableLinksUseCase = new GetStableLinksUseCase(linkRepository);
+        const results = await getStableLinksUseCase.execute(session.user.id);
+        setRiders(results);
+      }
+      if (session.user.role === "teacher") {
+        const getTeacherLinkUseCase = new GetTeacherLinksUseCase(
+          linkRepository
+        );
+        const results = await getTeacherLinkUseCase.execute(session.user.id);
+        setRiders(results);
+      }
     };
     fetchRiders();
   }, [session]);
+
+  if (riders.length === 0) {
+    return (
+      <div className="text-center">
+        Vous n'avez pas encore de cavaliers dans votre écurie
+      </div>
+    );
+  }
 
   return (
     <Table>

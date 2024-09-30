@@ -23,7 +23,7 @@ export const UserNavbar = ({ session }: UserNavbarProps) => {
           <Link href="/lessons">Planning</Link>
         </li>
         <li>
-          <Link href="/contact">Cavaliers</Link>
+          <Link href="/account/riders">Cavaliers</Link>
         </li>
       </ul>
       <Link href="/">{session.user.name}</Link>

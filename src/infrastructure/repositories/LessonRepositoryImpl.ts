@@ -17,6 +17,10 @@ export class LessonRepositoryImpl implements LessonRepository {
     return lessonApi.getLessonByStableId(stableId);
   }
 
+  async findByTeacher(teacherId: string): Promise<Lesson[]> {
+    return lessonApi.findByTeacher(teacherId);
+  }
+
   async getLessonsByDate(date: string): Promise<Lesson[]> {
     return lessonApi.getLessonsByDate(date);
   }
@@ -27,6 +31,11 @@ export class LessonRepositoryImpl implements LessonRepository {
     for (const link of links) {
       if (link.stableId) {
         const getLessons = await lessonApi.getLessonByStableId(link.stableId);
+        console.log(getLessons);
+        lessons.push(...getLessons);
+      }
+      if (link.teacherId) {
+        const getLessons = await lessonApi.findByTeacher(link.teacherId);
         console.log(getLessons);
         lessons.push(...getLessons);
       }
