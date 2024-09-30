@@ -17,6 +17,7 @@ export async function GET(
         name: {
           contains: lowercasedName,
         },
+        role: "teacher" || "stable",
       },
       take: 10,
     });
@@ -31,6 +32,7 @@ export async function GET(
             // Chercher par email en utilisant contains, plus souple
             { email: { contains: lowercasedName } },
           ],
+          role: "teacher" || "stable",
         },
         take: 10,
       });

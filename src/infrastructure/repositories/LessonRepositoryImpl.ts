@@ -34,6 +34,11 @@ export class LessonRepositoryImpl implements LessonRepository {
         console.log(getLessons);
         lessons.push(...getLessons);
       }
+      if (link.teacherId) {
+        const getLessons = await lessonApi.findByTeacher(link.teacherId);
+        console.log(getLessons);
+        lessons.push(...getLessons);
+      }
     }
 
     return lessons;
