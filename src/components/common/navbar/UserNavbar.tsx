@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { RiderNavbar } from "./RiderNavbar";
 import { StableNavbar } from "./StableNavbar";
+import { UserMenu } from "./UserMenu";
 
 interface UserNavbarProps {
   session: Session;
@@ -26,7 +27,7 @@ export const UserNavbar = ({ session }: UserNavbarProps) => {
           <Link href="/account/riders">Cavaliers</Link>
         </li>
       </ul>
-      <Link href="/">{session.user.name}</Link>
+      <UserMenu session={session} />
     </nav>
   );
 };

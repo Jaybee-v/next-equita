@@ -1,4 +1,5 @@
 import AuthButton from "@/app/AuthButton.server";
+import { Button } from "@/components/ui/button";
 import { LinkSecondary } from "@/components/ui/LinkSecondary";
 import Link from "next/link";
 import React from "react";
@@ -6,15 +7,21 @@ import React from "react";
 export const PublicNavbar = () => {
   return (
     <nav className="flex items-center gap-6">
-      <ul className="flex gap-6">
+      <ul className="flex items-center gap-6">
         <li>
-          <Link href="/">Accueil</Link>
+          <Link href="/">
+            <Button variant={"link"}>Accueil</Button>
+          </Link>
         </li>
         <li>
-          <Link href="/about">A propos</Link>
+          <Link href="/about">
+            <Button variant={"link"}>A propos</Button>
+          </Link>
         </li>
         <li>
-          <Link href="/contact">Contact</Link>
+          <Link href="/contact">
+            <Button variant={"link"}>Contact</Button>
+          </Link>
         </li>
         <li>
           <Link

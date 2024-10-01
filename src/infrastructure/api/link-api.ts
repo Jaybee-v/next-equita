@@ -25,6 +25,7 @@ export const linkApi = {
 
   async getRiderLinks(id: string): Promise<Link[]> {
     const links = await fetch(`http://localhost:3000/api/link/rider/${id}`);
+    console.log(links);
 
     if (links.status === 200) {
       return links.json();
