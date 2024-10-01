@@ -30,7 +30,7 @@ export const OthersAccountPage = ({ session }: OthersAccoutPageProps) => {
   if (!user) return <Loader />;
 
   return (
-    <main className="max-w-6xl mx-auto py-6">
+    <main className="max-w-6xl mx-auto py-6 max-lg:px-2">
       <h1>Stable Account</h1>
       <p>Hi, {user.name}!</p>
       <section className="flex max-lg:flex-col justify-between gap-4">

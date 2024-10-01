@@ -12,7 +12,7 @@ interface TeacherLessonPageProps {
 
 export const TeacherLessonPage = ({ session }: TeacherLessonPageProps) => {
   return (
-    <main className="lg:py-4 max-w-6xl mx-auto grid gap-y-6">
+    <main className="lg:py-4 max-w-6xl mx-auto grid gap-y-6 max-lg:px-2">
       <h1 className="text-4xl font-bold text-center tracking-wide py-2 text-sky-700">
         Gérez vos leçons en toute simplicité
       </h1>
