@@ -9,7 +9,7 @@ export const Navbar = async () => {
   const session = await auth();
   return (
     <div className="w-full bg-card shadow sticky">
-      <header className="flex justify-between items-center max-w-6xl mx-auto py-2">
+      <header className="flex justify-between items-center max-w-6xl mx-auto py-2 max-lg:px-4">
         <div>
           <Link
             href="/"

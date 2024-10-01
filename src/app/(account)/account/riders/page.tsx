@@ -20,7 +20,7 @@ export default async function StableRidersPage() {
 
   if (session.user.role === "teacher")
     return (
-      <main className="h-full">
+      <main className="h-full max-lg:px-2">
         <TeacherRidersPageView session={session} />
       </main>
     );
