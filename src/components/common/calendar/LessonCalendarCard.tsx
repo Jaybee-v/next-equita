@@ -69,11 +69,16 @@ export const LessonCalendarCard = ({
     );
 
   const isRider = session.user.role === "rider";
+  const isParticularLesson = lesson.emptyPlaces === 1;
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="bg-card text-card-foreground h-full w-full rounded-md p-2 border-l-4 border-primary hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer">
+        <div
+          className={`bg-card text-card-foreground h-full w-full rounded-md p-2 border border-l-4 ${
+            isParticularLesson ? "border-orange-400" : "border-primary"
+          } hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer`}
+        >
           <article className="flex flex-col h-full justify-between">
             <h4 className="font-semibold text-sm line-clamp-2">
               {lesson.title}
